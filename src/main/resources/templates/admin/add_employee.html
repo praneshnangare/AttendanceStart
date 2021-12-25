@@ -18,6 +18,14 @@
 					<p class="text-center" th:text="${session.message.content}">
 						<th:block th:text="${#session.removeAttribute('message')"></th:block>
 				</div>
+				
+				<div th:if="${session.message}"
+					th:classappend="${session.message.type}"
+					class="alert alert-primary" role="alert">
+					<p class="text-center" th:text="${session.message.content}">
+						<th:block th:text="${#session.removeAttribute('message')"></th:block>
+				</div>
+				
 				<h1 class="text-center">Add Employee</h1>
 
 				<div class="container-fluid mt-1">
@@ -26,7 +34,7 @@
 
 						<div class="col-md-8 offset-md-2">
 
-							<form action="#" th:object="${user}" method="POST"
+							<form action="#" th:object="${employee}" method="POST"
 								th:action="@{/admin/save-employee}" class="mt-2">
 
 

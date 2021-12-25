@@ -1,4 +1,4 @@
-package MySimpleUrlAuthenticationSuccessHandler;
+package com.example.demo.config;
 
 import java.io.IOException;
 import java.util.Collection;
@@ -56,7 +56,6 @@ public class MySimpleUrlAuthenticationSuccessHandler implements AuthenticationSu
         for (final GrantedAuthority grantedAuthority : authorities) {
 
             String authorityName = grantedAuthority.getAuthority();
-            System.out.println(authorityName);
             if(roleTargetUrlMap.containsKey(authorityName)) {
                 return roleTargetUrlMap.get(authorityName);
             }

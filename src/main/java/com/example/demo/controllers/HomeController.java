@@ -62,13 +62,13 @@ public class HomeController {
 			System.out.println(user);
 			User result = this.userDAO.save(user);
 			model.addAttribute("user" , new User());
-			session.setAttribute("message", new Message("Successfully registered" , "alert-success"));
+			model.addAttribute("message", new Message("Successfully registered" , "alert-success"));
 			
 		} catch (Exception e) {
 			// TODO: handle exception
 			e.printStackTrace();
 			model.addAttribute("user" , user);
-			session.setAttribute("message", new Message("Something went wrong !! "+e.getMessage() , "alert-danger"));
+			model.addAttribute("message", new Message("Something went wrong !! "+e.getMessage() , "alert-danger"));
 		}
 		return "signup";
 	}
