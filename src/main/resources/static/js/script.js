@@ -4,6 +4,7 @@ const toggleSidebar = () =>{
 
     $(".sidebar").css("display" , "none");
     $(".content").css("margin-left", "0%");
+    console.log("closed");
   }
   else{
     $(".sidebar").css("display" , "block");

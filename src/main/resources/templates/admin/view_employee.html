@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+	th:replace="admin/base::layout(~{::section})">
+<head>
+<meta charset="UTF-8" />
+<title>this is home page</title>
+</head>
+<body>
+	<section>
+		<div class="card mr-3 ml-3" th:if=${employee}>
+			<div class="card-body">
+				<div class="container text-center">
+
+					<h3 class="mt-3">
+						<span th:text="${employee.name}"></span>
+					</h3>
+					<table class="table">
+						<thead>
+							<tr>
+								<th scope="col">#ID</th>
+								<th scope="col"><span th:text="${employee.id}"></span></th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr>
+								<th scope="row">Email</th>
+								<td><span th:text="${employee.email}"></span></td>
+							</tr>
+							<tr>
+								<th scope="row">Phone</th>
+								<td><span th:text="${employee.mobile}"></span></td>
+							</tr>
+							<tr>
+								<th scope="row">Date of Joining</th>
+								<td><span th:text="${employee.DOJ}"></span></td>
+							</tr>
+							<tr>
+								<th scope="row">Adhar</th>
+								<td><span th:text="${employee.adhar}"></span></td>
+							</tr>
+							<tr>
+								<th scope="row">Per Day</th>
+								<td><span th:text="${employee.perDay}"></span></td>
+							</tr>
+						</tbody>
+					</table>
+
+					<button th:onclick="|deleteEmployee(${employee.id})|"
+						class="btn btn-danger btn-sm btn-block">Delete</button>
+						
+					<button class="btn btn-primary btn-sm btn-block">Update</button>
+					
+				</div>
+			</div>
+	</section>

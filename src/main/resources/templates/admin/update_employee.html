@@ -3,7 +3,7 @@
 	th:replace="admin/base::layout(~{::section})">
 <head>
 <meta charset="UTF-8" />
-<title>Add Employee</title>
+<title>Update Employee</title>
 </head>
 <body>
 	<section>
@@ -13,7 +13,7 @@
 
 			<div class="card-body">
 				
-				<h1 class="text-center">Add Employee</h1>
+				<h1 class="text-center">Update Employee</h1>
 
 				<div class="container-fluid mt-1">
 
@@ -22,9 +22,9 @@
 						<div class="col-md-8 offset-md-2">
 
 							<form action="#" th:object="${employee}" method="POST"
-								th:action="@{/admin/save-employee}" class="mt-2">
+								th:action="@{/admin/process-update}" class="mt-2">
 
-
+								<input  th:value = "${employee.id}" name = "id"/>
 								<!-- First Name  -->
 
 								<div class="input-group">
@@ -33,7 +33,7 @@
 											<i class="fa fa-plus"></i>
 										</div>
 									</div>
-									<input required type="text" id="name" name="name"
+									<input th:value="${employee.name}" required type="text" id="name" name="name"
 										placeholder="Enter Name here" class="form-control" />
 								</div>
 
@@ -44,7 +44,7 @@
 											<i class="fa fa-phone"></i>
 										</div>
 									</div>
-									<input required min="10" type="number" id="phone" name="mobile"
+									<input th:value="${employee.mobile}" required min="10" type="number" id="phone" name="mobile"
 										placeholder="Enter Phone Number  here" class="form-control" />
 								</div>
 
@@ -54,7 +54,7 @@
 									<div class="input-group-prepend">
 										<div class="input-group-text ">@</div>
 									</div>
-									<input required type="email" id="email" name="email"
+									<input th:value="${employee.email}" required type="email" id="email" name="email"
 										placeholder="Enter email here" class="form-control" />
 								</div>
 
@@ -65,7 +65,7 @@
 											<i class="fas fa-user-alt"></i>
 										</div>
 									</div>
-									<input required type="text" id="adhar" name="adhar"
+									<input th:value="${employee.adhar}" required type="text" id="adhar" name="adhar"
 										placeholder="Enter Adhar here" class="form-control" />
 								</div>
 
@@ -77,18 +77,18 @@
 											<i class="fa fa-briefcase"></i>
 										</div>
 									</div>
-									<input required type="number" id="perDay" name="perDay"
+									<input th:value="${employee.perDay}" required type="number" id="perDay" name="perDay"
 										placeholder="Enter PerDay here" class="form-control" />
 								</div>
 
 								<div class="form-check form-check-inline">
 									<input class="form-check-input" type="radio" name="gender"
-										id="inlineRadio1" value="option1"> <label
+										id="inlineRadio1" value="Male"> <label
 										class="form-check-label" for="inlineRadio1">Male</label>
 								</div>
 								<div class="form-check form-check-inline">
 									<input class="form-check-input" type="radio" name="gender"
-										id="inlineRadio2" value="option2"> <label
+										id="inlineRadio2" value="Female"> <label
 										class="form-check-label" for="inlineRadio2">Female</label>
 								</div>
 
@@ -102,15 +102,15 @@
 			</div>
 		</div>
 
-		<script
+		<!--<script
 			src="https://cdn.tiny.cloud/1/no-api-key/tinymce/5/tinymce.min.js"
 			referrerpolicy="origin"></script>
 
-		<script>
+		 <script>
       tinymce.init({
         selector: '#mytextarea'
       });
-    </script>
+    </script> -->
 
 		<script>
         $(document).ready(() => {

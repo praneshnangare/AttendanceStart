@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	th:replace="admin/base::layout(~{::section})">
+<head>
+<meta charset="ISO-8859-1">
+<title>This is Admin dashboard</title>
+</head>
+<body>
+	<section>
+		<div class="card mr-3 ml-3">
+
+			<div class="card-body">
+				<h1 class="text-center">Mark Attendance</h1>
+				<form th:action="@{/admin/save}" th:object="${form}" method="post">
+					<div class="table-responsive">
+						<table class="table table-hover ">
+							<thead class="thead-light ">
+								<tr>
+									<th scope="col">Name</th>
+									<th scope="col">Action</th>
+								</tr>
+							</thead>
+							<tr th:each="user , itemStat : *{attendanceList}">
+								<td><input th:field="*{attendanceList[__${itemStat.index}__].name}" >
+								</td>
+								<td><input th:field="*{attendanceList[__${itemStat.index}__].name}"></td>
+							</tr>
+						</table>
+						<div class="container text-center">
+							<button class="btn btn-outline-primary">Save Employee</button>
+						</div>
+					</div>
+				</form>
+			</div>
+		</div>
+	</section>
+</body>
