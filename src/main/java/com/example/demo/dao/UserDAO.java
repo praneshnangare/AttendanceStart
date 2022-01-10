@@ -19,5 +19,7 @@ public interface UserDAO extends JpaRepository<User, Integer>{
 	public Page<User> findByRole(String role ,  Pageable pePageable);
 	
 	public List<User> findByRole(String role);
+
+	public List<User> findByRoleOrderByNameAsc(String string);
 	
 }

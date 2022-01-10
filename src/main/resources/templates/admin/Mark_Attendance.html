@@ -13,25 +13,81 @@
 				<h1 class="text-center">Mark Attendance</h1>
 				<form th:action="@{/admin/save}" th:object="${form}" method="post">
 					<div class="table-responsive">
+					<div class="text-center mb-3">
+					<h5 class="mr-2" style="display:inline-block">Date : </h5> <input  type="date" id="dateSelect" th:field="*{date}" onchange="applyDate(this);" pattern="yyyy-MM-dd" >
+					</div>
 						<table class="table table-hover ">
 							<thead class="thead-light ">
 								<tr>
 									<th scope="col">Name</th>
-									<th scope="col">Action</th>
+									<th scope="col">Status</th>
+									<th scope="col">Extra Hours</th>
+									<th scope="col">Remarks</th>
 								</tr>
 							</thead>
 							<tr th:each="user , itemStat : *{attendanceList}">
-								<td><input th:field="*{attendanceList[__${itemStat.index}__].name}" >
+							
+								<input class = "dateField" th:field="*{attendanceList[__${itemStat.index}__].attendanceDate}" hidden="true" />
+								
+								<!-- Name -->
+								<input type="hidden"
+									th:field="*{attendanceList[__${itemStat.index}__].name}"/>
+								
+								
+								<td th:text = "*{attendanceList[__${itemStat.index}__].name}" ></td>
+								
+								<!-- Status -->
+								<td><div class="form-check form-check-inline">
+									<input class="form-check-input" type="radio" 
+									 th:field="*{attendanceList[__${itemStat.index}__].status}"
+										th:id="presentId1 + ${itemStat.index}" value="present" checked = "checked"> 
+										
+									<label class="form-check-label" th:for="presentId1 + ${itemStat.index}"
+									>Present</label>
+								</div>
+								
+								<div class="form-check form-check-inline">
+									<input class="form-check-input" type="radio" th:field="*{attendanceList[__${itemStat.index}__].status}"
+										th:id="absentId + ${itemStat.index}" value="absent"> <label
+										class="form-check-label" th:for="absentId + ${itemStat.index}">Absent</label>
+								</div>
+								
+								<div class="form-check form-check-inline">
+									<input class="form-check-input" type="radio" th:field="*{attendanceList[__${itemStat.index}__].status}"
+										th:id="halfDayId + ${itemStat.index}" value="halfDay"> <label
+										class="form-check-label" th:for="halfDayId + ${itemStat.index}">Half-Day</label>
+								</div>
+								
 								</td>
-								<td><input th:field="*{attendanceList[__${itemStat.index}__].name}"></td>
+									
+								<!-- Extra hours -->
+								<td><input type="number"
+									th:field="*{attendanceList[__${itemStat.index}__].extraHours}"></td>
+									
+								<!-- Remarks -->
+								<td><input
+									th:field="*{attendanceList[__${itemStat.index}__].remarks}"></td>
+
 							</tr>
 						</table>
+						
 						<div class="container text-center">
-							<button class="btn btn-outline-primary">Save Employee</button>
+							<button class="btn btn-outline-primary">Save Attendance</button>
 						</div>
+						
 					</div>
 				</form>
 			</div>
 		</div>
 	</section>
 </body>
+<script type="text/javascript">
+	function applyDate(input1){
+		var input2 = document.getElementsByClass("dateField");
+		for(var i=0; i<input2.length ; i++){
+			input2[i].value = input1.value;
+		}
+		console.log(input1.value);
+	}
+</script>
+</html>

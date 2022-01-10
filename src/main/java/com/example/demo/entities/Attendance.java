@@ -21,7 +21,8 @@ public class Attendance {
 	private String status;
 	private Integer extraHours;
 	private String remarks;
-	@DateTimeFormat(pattern = "dd-MMM-yyyy")
+//	@DateTimeFormat(pattern = "dd-MMM-yyyy")
+	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	private Date attendanceDate;
 	
 	@ManyToOne
