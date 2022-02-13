@@ -13,7 +13,7 @@ import com.example.demo.entities.User;
 
 public interface UserDAO extends JpaRepository<User, Integer>{
 
-	@Query("select u from User u where u.email = :email")
+	@Query("select u from User u where u.email = :email or u.name= :email or u.mobile=:email")
 	public User getUserByUsername(@Param("email") String email);
 
 	//@Query("from User as u where u.role = 'ROLE_USER')
@@ -28,4 +28,8 @@ public interface UserDAO extends JpaRepository<User, Integer>{
 //	public List<User> findOne(String employee);
 
 	public List<User> findByName(String employee);
+
+	public User findByMobile(String mobile);
+
+	public List<User> findAllByMobile(String mobile);
 }

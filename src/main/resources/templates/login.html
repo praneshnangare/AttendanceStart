@@ -34,15 +34,29 @@
 									<input type="password" name="password" id="password" 
 										class="form-control">
 								</div>
-								<div class="form-group">
-									<label for="remember-me" class="text-info"><span>Remember
-											me</span> <span><input id="remember-me" name="remember-me"
-											type="checkbox"></span></label><br> <input type="submit"
+
+								<div>
+									<div class="form-group text-left line mr-4">
+										<span><input id="remember-me" name="remember-me"
+											type="checkbox"></span> <label for="remember-me"
+											class="text-info"><span>Remember me</span></label>
+									</div>
+									
+									<div class = "text-center line ml-4 ">
+									<a href="#" th:href="@{/forgot-password}" class="text-info">Forgot Password?</a>	
+									</div>
+									
+									<div id="register-link" class="text-right line ml-4">
+										<a href="#" th:href="@{/signup}" class="text-info">Register
+											here</a>
+									</div>
+								</div>
+							
+								<div class="container text-center">
+									<input type="submit"
 										name="submit" class="btn btn-info btn-md" value="submit">
 								</div>
-								<div id="register-link" class="text-right">
-									<a href="#" th:href="@{/signup}" class="text-info">Register here</a>
-								</div>
+								
 							</form>
 						</div>
 					</div>

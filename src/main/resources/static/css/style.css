@@ -44,6 +44,32 @@ body {
 	margin-top: -85px;
 }
 
+
+
+
+
+#forgot .container #forgot-row #forgot-column #forgot-box {
+	margin-top: 27px;
+	max-width: 600px;
+	height: 420px;
+	border: 1px solid #9C9C9C;
+	background-color: white;
+}
+
+#forgot .container #forgot-row #forgot-column #forgot-box #forgot-form {
+	padding: 20px;
+}
+
+#forgot .container #forgot-row #forgot-column #forgot-box #forgot-form #register-link
+	{
+	margin-top: -85px;
+}
+
+
+
+
+
+
 /* Sidebar style*/ 
 .sidebar {
 	width: 18%;
