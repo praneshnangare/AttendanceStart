@@ -19,7 +19,7 @@ function applyDate(input1) {
 		input2[i].value = input1.value;
 	}
 	console.log(input1.value);*/
-	window.location = "/admin/mark-attendance/?date=" + intput1.value;
+	window.location = "/admin/mark-attendance/?date=" + input1.value;
 }
 
 const filter = () => {
