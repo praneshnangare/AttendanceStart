@@ -69,9 +69,7 @@ public class AttendanceController {
 		List<User> users = this.userDAO.findByRole("ROLE_USER");
 		List<Attendance> records = this.attendanceDAO.findByAttendanceDate(date);
 		AttendanceForm attendanceForm = new AttendanceForm();
-		System.out.println("record -> " + records.size());
-		if (records.size() != 0) {
-			System.out.println("it is not empty");
+		if (records.size() != users.size()) {
 			for (User user : users) {
 				boolean flg = false;
 				Attendance rec = null;
@@ -95,7 +93,6 @@ public class AttendanceController {
 				}
 			}
 		} else {
-			System.out.println("in the else");
 			attendanceForm.setAttendanceList(records);
 		}
 
