@@ -26,38 +26,73 @@
 						
 						<form action="" th:action="@{/do_register}" method="post" th:object="${user}">
 
-							<!-- Name field -->
-							<div class="form-group">
+								<!-- First Name  -->
 
-								<label for="name_field">Your Name</label> 
-								<input type="text" name="name"
-									class="form-control" id="name_field"
-									aria-describedby="emailHelp" placeholder="Enter here" 
-									required th:value="${user.name}"/>
+								<div class="input-group">
+									<div class="input-group-prepend">
+										<div class="input-group-text ">
+											<i class="fa fa-plus"></i>
+										</div>
+									</div>
+									<input required type="text" id="name" name="name"
+										placeholder="Enter Name here" class="form-control" />
+								</div>
 
-							</div>
+								<!-- Phone Field -->
+								<div class="input-group mt-3">
+									<div class="input-group-prepend">
+										<div class="input-group-text ">
+											<i class="fa fa-phone"></i>
+										</div>
+									</div>
+									<input required min="10" type="number" id="phone" name="mobile"
+										placeholder="Enter Phone Number  here" class="form-control" />
+								</div>
 
-							<!-- Email field -->
-							<div class="form-group">
+								<!-- Email Field  -->
 
-								<label for="email_field">Your Email</label> 
-								<input type="email" name="email"
-									class="form-control" id="email_field"
-									aria-describedby="emailHelp" placeholder="Enter here"
-									required th:value="${user.email}"/>
+								<div class="input-group mt-3">
+									<div class="input-group-prepend">
+										<div class="input-group-text ">@</div>
+									</div>
+									<input required type="email" id="email" name="email"
+										placeholder="Enter email here" class="form-control" />
+								</div>
 
-							</div>
+								<!-- Adhar -->
+								<div class="input-group mt-3">
+									<div class="input-group-prepend">
+										<div class="input-group-text ">
+											<i class="fas fa-user-alt"></i>
+										</div>
+									</div>
+									<input required type="text" id="adhar" name="adhar"
+										placeholder="Enter Adhar here" class="form-control" />
+								</div>
 
-							<!-- password field -->
-							<div class="form-group">
+								<!--  Per Day -->
 
-								<label for="password_field">Your Password</label> 
-								<input name="password"
-									type="password" class="form-control" id="password_field"
-									aria-describedby="emailHelp" placeholder="Enter here" 
-									required />
+								<div class="input-group mt-3">
+									<div class="input-group-prepend">
+										<div class="input-group-text ">
+											<i class="fa fa-briefcase"></i>
+										</div>
+									</div>
+									<input required type="number" id="perDay" name="perDay"
+										placeholder="Enter PerDay here" class="form-control" />
+								</div>
 
-							</div>
+								<div class="form-check form-check-inline">
+									<input class="form-check-input" type="radio" name="gender"
+										id="inlineRadio1" value="male"> <label
+										class="form-check-label" for="inlineRadio1">Male</label>
+								</div>
+								<div class="form-check form-check-inline">
+									<input class="form-check-input" type="radio" name="gender"
+										id="inlineRadio2" value="female"> <label
+										class="form-check-label" for="inlineRadio2">Female</label>
+								</div>
+							
 							<!-- Terms and conditions -->
 							<div class="form-group form-check">
 								<input type="checkbox" name="agreement" class="form-check-input" 

@@ -126,7 +126,7 @@
 	function deleteEmployee(id){
 		swal({
 			  title: "Are you sure?",
-			  text: "Once deleted, you will not be able to recover this imaginary file!",
+			  text: "Once deleted, you will not be able to recover this Employee!",
 			  icon: "warning",
 			  buttons: true,
 			  dangerMode: true,
@@ -134,11 +134,11 @@
 			.then((willDelete) => {
 			  if (willDelete) {
 				  window.location = "/admin/delete/" + id;
-			    swal("Poof! Your imaginary file has been deleted!", {
+			    swal("Employee has been deleted!", {
 			      icon: "success",
 			    });
 			  } else {
-			    swal("Your imaginary file is safe!");
+			    swal("Employee Details are safe!");
 			  }
 			});
 		
