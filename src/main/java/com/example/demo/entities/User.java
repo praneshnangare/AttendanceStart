@@ -21,7 +21,7 @@ import javax.persistence.TemporalType;
 
 
 @Entity
-@Table(name="USER")
+@Table(name="USER_TABLE")
 public class User {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
