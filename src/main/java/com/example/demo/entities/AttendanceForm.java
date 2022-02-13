@@ -10,8 +10,14 @@ public class AttendanceForm {
 	private List<Attendance> attendanceList;
 	@DateTimeFormat(pattern = "yyyy-mm-dd")
 	private Date date;
+	private Boolean notify = false;
 
-
+	public Boolean getNotify() {
+		return notify;
+	}
+	public void setNotify(Boolean notify) {
+		this.notify = notify;
+	}
 	public Date getDate() {
 		return date;
 	}

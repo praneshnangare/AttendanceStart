@@ -24,7 +24,7 @@
 							<form action="#" th:object="${employee}" method="POST"
 								th:action="@{/admin/process-update}" class="mt-2">
 
-								<input  th:value = "${employee.id}" name = "id"/>
+								<input type="hidden" th:value = "${employee.id}" name = "id"/>
 								<!-- First Name  -->
 
 								<div class="input-group">

@@ -1,6 +1,7 @@
 package com.example.demo.dao;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -22,4 +23,9 @@ public interface UserDAO extends JpaRepository<User, Integer>{
 
 	public List<User> findByRoleOrderByNameAsc(String string);
 	
+	public Optional<User> findById(Integer id);
+
+//	public List<User> findOne(String employee);
+
+	public List<User> findByName(String employee);
 }

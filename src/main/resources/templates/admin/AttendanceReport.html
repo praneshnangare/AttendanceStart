@@ -35,13 +35,15 @@
 								th:text="${user.name}"></option>
 						</select>
 					</div>
-					
+					<div class="text-center mb-3 mt-3 ml-3 line"><a class = "btn btn-primary" 
+					onclick="filterexport();">Export</a></div>
 				</div>
 				
 				<div class="table-responsive">
 					<table class="table table-hover ">
 						<thead class="thead-light ">
 							<tr>
+								<th scope="col">Date</th>
 								<th scope="col">Name</th>
 								<th scope="col">Status</th>
 								<th scope="col">Extra Hours</th>
@@ -50,6 +52,7 @@
 						</thead>
 						<tbody>
 							<tr th:each="c : ${records}">
+								<td><span th:text="${c.attendanceDate}"></span></td>
 								<td><span th:text="${c.name}"></span></td>
 								<td><span th:text = "${c.status}"></span></td>
 								<td><span th:text = "${c.extraHours}"></span></td>

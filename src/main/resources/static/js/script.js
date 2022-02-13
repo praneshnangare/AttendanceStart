@@ -14,11 +14,12 @@ const toggleSidebar = () => {
 };
 
 function applyDate(input1) {
-	var input2 = document.getElementsByClassName("dateField");
-	for (var i = 0; i < input2.length; i++) {
+	//var input2 = document.getElementsByClassName("dateField");
+	/*for (var i = 0; i < input2.length; i++) {
 		input2[i].value = input1.value;
 	}
-	console.log(input1.value);
+	console.log(input1.value);*/
+	window.location = "/admin/mark-attendance/?date=" + intput1.value;
 }
 
 const filter = () => {
@@ -26,5 +27,10 @@ const filter = () => {
 	var to = $("#todate").val();
 	var emp = $("#emp").val();
 	window.location = "/admin/fetchRecords/?from=" + from + "&to=" + to +"&emp=" + emp; 
-	
+}
+const filterexport = () => {
+	var from = $("#fromdate").val();
+	var to = $("#todate").val();
+	var emp = $("#emp").val();
+	window.location = "/admin/downloadRecords/?from=" + from + "&to=" + to +"&emp=" + emp; 
 }

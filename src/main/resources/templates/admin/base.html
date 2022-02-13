@@ -25,7 +25,7 @@
 	<!-- Navbar -->
 	<nav class="navbar fixed-top navbar-expand-lg navbar-dark bg-primary">
 		<a class="navbar-brand" href="#">Pranesh Enterprises</a>
-		<button class="navbar-toggler" type="button" data-toggle="collapse"
+		<button class="navbar-toggler three-lines" type="button" data-toggle="collapse"
 			data-target="#navbarSupportedContent"
 			aria-controls="navbarSupportedContent" aria-expanded="false"
 			aria-label="Toggle navigation">
@@ -71,18 +71,15 @@
 		 
 		 <a href="#" th:href="@{/admin/fetchRecords}"    class="item">Attendance Report</a> 
 			
-		 <a href="#" class="item">Payment Report</a>
+		 <a hidden href="#" class="item">Payment Report</a>
 		 
-		 <a href="#" th:href="@{/admin/downloadRecords}"    class="item">Download Report</a> 
-			
-		 <a href="#" class="item">logout</a>
-
+		 <a hidden href="#" th:href="@{/admin/downloadRecords}"    class="item">Download Report</a> 
 	</div>
 	<!-- End Sidebar -->
 
 	<!-- Content Area -->
 	<div class="content mt-5">
-		<i class="fas fa-bars m-3" onclick="toggleSidebar();"></i>
+		<i class="fas fa-bars m-3 three-lines" onclick="toggleSidebar();"></i>
 		<!-- message box  -->
 		<div th:if="${session.message}" class="container">
 

@@ -11,7 +11,7 @@
 
 			<div class="card-body">
 				<h1 class="text-center">Mark Attendance</h1>
-				<form th:action="@{/admin/save}" th:object="${form}" method="post">
+				<form id = "f" th:action="@{/admin/save}" th:object="${form}" method="post">
 					<div class="table-responsive">
 					<div class="text-center mb-3">
 					<h5 class="mr-2" style="display:inline-block">Date : </h5> <input  type="date" id="dateSelect" th:field="*{date}" onchange="applyDate(this);" pattern="yyyy-MM-dd" >
@@ -27,12 +27,17 @@
 							</thead>
 							<tr th:each="user , itemStat : *{attendanceList}">
 							
-								<input class = "dateField" th:field="*{attendanceList[__${itemStat.index}__].attendanceDate}" hidden="true" />
+								<input class = "dateField" hidden="true" 
+									th:field="*{attendanceList[__${itemStat.index}__].attendanceDate}" />
 								
 								<!-- Name -->
 								<input type="hidden"
 									th:field="*{attendanceList[__${itemStat.index}__].name}"/>
+									
+								<input type="hidden"
+									th:field="*{attendanceList[__${itemStat.index}__].user}"/>
 								
+								<input type="hidden" th:field="*{attendanceList[__${itemStat.index}__].atdId}"/>
 								
 								<td th:text = "*{attendanceList[__${itemStat.index}__].name}" ></td>
 								
@@ -69,6 +74,8 @@
 									th:field="*{attendanceList[__${itemStat.index}__].remarks}"></td>
 
 							</tr>
+							<tr><td><input id = "notifyOverWhatsapp" th:field="*{notify}" type="checkbox" value = "true">
+							Notify Over WhatsApp</td></tr>
 						</table>
 						
 						<div class="container text-center">

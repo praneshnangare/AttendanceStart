@@ -4,9 +4,14 @@ import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
@@ -22,11 +27,15 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.example.demo.dao.AttendanceDAO;
+import com.example.demo.dao.PaymentInfoDAO;
 import com.example.demo.dao.UserDAO;
 import com.example.demo.entities.Attendance;
 import com.example.demo.entities.AttendanceForm;
+import com.example.demo.entities.PaymentInfo;
 import com.example.demo.entities.User;
 import com.example.demo.helper.ExcelExporter;
+import com.example.demo.helper.Message;
+import com.example.demo.helper.SmsUtility;
 
 @Controller
 @RequestMapping("/admin")
@@ -38,6 +47,9 @@ public class AttendanceController {
 	@Autowired
 	private UserDAO userDAO;
 	
+	@Autowired
+	private PaymentInfoDAO paymentInfoDAO;
+	
 	SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 	
 	 @InitBinder
@@ -47,31 +59,71 @@ public class AttendanceController {
 	 
 	@GetMapping("/mark-attendance")
 	public String showCreateForm(Model model) throws ParseException {
+		Date date = new Date();
+	    return "redirect:mark-attendance/?date=" + sdf.format(date);
+	}
+	
+	@GetMapping("/mark-attendance/")
+	public String markattendance(@RequestParam("date") Date date , Model model) {
+		
 		List<User> users = this.userDAO.findByRole("ROLE_USER");
+		List<Attendance> records = this.attendanceDAO.findByAttendanceDate(date);
 		AttendanceForm attendanceForm = new AttendanceForm();
+		System.out.println("user size " + users.size());
+		
+		if(!records.isEmpty()) {
 	    for (User user: users) {
-	    	Attendance attendance = new Attendance();
-	    	attendance.setName(user.getName());
-	    	attendance.setAttendanceDate(new Date());
-	        attendanceForm.addItem(attendance);
+	    	//user.set
+	    	//PaymentInfo paymentInfo = new PaymentInfo(user);
+	    	boolean flg = false;
+	    	Attendance rec = null;
+	    	System.out.println("user->" +user.getName() );
+	    	for (Attendance recordItem : records) {
+	    		if (user.getName().equals(recordItem.getName())) {
+	    			flg = true;
+	    			rec = recordItem;
+	    			break;
+	    		}
+	    		else {
+	    			flg = false;
+	    		}
+	    	}
+	    	if(!flg) {
+	    		Attendance attendance = new Attendance();
+		    	attendance.setUser(user);
+		    	attendance.setName(user.getName());
+		    	attendance.setAttendanceDate(new Date());
+		    	attendanceForm.addItem(attendance);
+	    	}
+	    	else {
+	    		attendanceForm.addItem(rec);
+	    	}
 	    }
+		}
+		else {
+			attendanceForm.setAttendanceList(records);
+		}
 	    
-//	    SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd"); 
-	    Date date = new Date();//formatter.parse(formatter.format(new Date()));
 	    attendanceForm.setDate(date);
 	    model.addAttribute("form", attendanceForm);
-	    return "admin/mark_attendance";
+		return "admin/mark_attendance";
 	}
 	
 	@PostMapping("/save")
-	public String saveRecords(@ModelAttribute("form") AttendanceForm b) {	
+	public String saveRecords( @ModelAttribute("form") AttendanceForm b, HttpSession session) {
 		attendanceDAO.saveAll(b.getAttendanceList());
+		b.getAttendanceList().stream().forEach(x->System.out.println(x.getUser().getName()));
+		if((boolean)b.getNotify()) {
+			String message = "You have been marked : ";
+			
+			b.getAttendanceList().stream().forEach(x-> SmsUtility.sendSms(x.getUser().getMobile(), message + x.getStatus()));
+		}
+		session.setAttribute("message", new Message("Attendance has been saved successfully", "alert-success"));
 		return "admin/mark_attendance";
 	}
 	
 	@GetMapping("/fetchRecords")
 	public String getAttendanceRecords(Model model) {
-		
 		Date fromdate = new Date();
 		Date todate = new Date();
 		String employee = "";
@@ -80,7 +132,7 @@ public class AttendanceController {
 	
 	@GetMapping("/fetchRecords/")
 	public String getAttendance(@RequestParam("from") Date from, @RequestParam("to") Date to, 
-			@RequestParam("emp") String employee , Model model) {
+			@RequestParam("emp") String employee, Model model) {
 		List<User> users = this.userDAO.findByRole("ROLE_USER");
 		List<Attendance> records = null;
 		if("".equals(employee)) {
@@ -89,6 +141,7 @@ public class AttendanceController {
 		else {
 			records = attendanceDAO.findByNameAndAttendanceDateBetween(employee, from , to);
 		}
+		
 		model.addAttribute("selectedEmp" , employee);
 		model.addAttribute("records", records);
 		model.addAttribute("users", users);
@@ -99,18 +152,44 @@ public class AttendanceController {
 		return "admin/AttendanceReport";
 	}
 	
+	
 	@GetMapping("/downloadRecords")
-	public void exportToExcel(HttpServletResponse response) throws IOException {
+	public void exportToExcel(HttpServletResponse response ,@RequestParam("from") Date from,
+			@RequestParam("to") Date to, @RequestParam("emp") String employee) throws IOException {
 		response.setContentType("application/octet-stream");
 		String headerKey = "Content-Disposition";
 		String headerValue = "attachment; filename=users_emp" + ".xlsx";
 		response.setHeader(headerKey, headerValue);
-
-//		List<User> users = this.userDAO.findByRoleOrderByNameAsc("ROLE_USER");
-		List<Attendance> records = this.attendanceDAO.findAllOrderByNameAsc();
-		ExcelExporter excelExporter = new ExcelExporter(records);
+		//List<Attendance> records = this.attendanceDAO.findAllByOrderByNameAsc();
+		//List<User> users = this.userDAO.findByRoleOrderByNameAsc("ROLE_USER");
+		List<User> users = this.userDAO.findByRole("ROLE_USER");
+		List<Attendance> records = null;
+		if("".equals(employee)) {
+			records = attendanceDAO.findByAttendanceDateBetween(from , to);
+			users = this.userDAO.findByRole("ROLE_USER");
+		}
+		else {
+			records = attendanceDAO.findByNameAndAttendanceDateBetween(employee, from , to);
+			users = this.userDAO.findByName(employee);
+		}
+		Map<User , List<Attendance>> map = createAttendanceMap(users,records);
+		ExcelExporter excelExporter = new ExcelExporter(map);
 		excelExporter.export(response);
 	}
+	
+	public Map<User , List<Attendance>> createAttendanceMap(List<User> users, List<Attendance> records) {
+		Map<User , List<Attendance>> map = new HashMap<User , List<Attendance>>();
+		for(User user : users) {
+			
+			List<Attendance> ls = records.stream().filter(record -> record.getName().equals(user.getName()))
+					.collect(Collectors.toList());
+			map.put(user, ls);
+			
+		}
+		return map;
+	}
+	
+
 }
 
 

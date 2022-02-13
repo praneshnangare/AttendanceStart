@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.SessionAttributes;
 
 import com.example.demo.dao.UserDAO;
+import com.example.demo.entities.PaymentInfo;
 import com.example.demo.entities.User;
 import com.example.demo.helper.Message;
 

@@ -11,10 +11,14 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.MapsId;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+
 
 @Entity
 @Table(name="USER")
@@ -36,9 +40,34 @@ public class User {
 	@Temporal(TemporalType.DATE)
 	private Date DOJ;
 	
+	
 	@OneToMany(cascade = CascadeType.ALL, fetch =  FetchType.LAZY , mappedBy = "user")
 	private List<Attendance> attendances = new ArrayList<Attendance>();
 	
+	@OneToOne(fetch = FetchType.LAZY,
+            cascade =  CascadeType.ALL,
+            mappedBy = "emp")
+	
+	private PaymentInfo paymentInfo;
+	
+	
+	
+	public User() {
+		super();
+		//this.paymentInfo = new PaymentInfo(this);
+	}
+	
+	
+	public PaymentInfo getPaymentInfo() {
+		return paymentInfo;
+	}
+
+
+	public void setPaymentInfo(PaymentInfo paymentInfo) {
+		this.paymentInfo = paymentInfo;
+	}
+
+
 	public List<Attendance> getAttendances() {
 		return attendances;
 	}

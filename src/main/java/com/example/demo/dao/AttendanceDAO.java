@@ -14,6 +14,6 @@ public interface AttendanceDAO extends JpaRepository<Attendance, Integer> {
 
 	public List<Attendance> findByNameAndAttendanceDateBetween(String employee, Date from, Date to);
 
-	public List<Attendance> findAllOrderByNameAsc();
+	public List<Attendance> findAllByOrderByNameAsc();
 
 }
