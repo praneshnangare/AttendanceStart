@@ -106,7 +106,7 @@ public class AttendanceController {
 	    
 	    attendanceForm.setDate(date);
 	    model.addAttribute("form", attendanceForm);
-		return "admin/Mark_attendance";
+		return "admin/Mark_Attendance";
 	}
 	
 	@PostMapping("/save")
@@ -119,7 +119,7 @@ public class AttendanceController {
 			b.getAttendanceList().stream().forEach(x-> SmsUtility.sendSms(x.getUser().getMobile(), message + x.getStatus()));
 		}
 		session.setAttribute("message", new Message("Attendance has been saved successfully", "alert-success"));
-		return "admin/Mark_attendance";
+		return "admin/Mark_Attendance";
 	}
 	
 	@GetMapping("/fetchRecords")
