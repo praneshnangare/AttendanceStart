@@ -28,6 +28,11 @@ const filter = () => {
 	var emp = $("#emp").val();
 	window.location = "/admin/fetchRecords/?from=" + from + "&to=" + to +"&emp=" + emp; 
 }
+const filterNormal = () => {
+	var from = $("#fromdate").val();
+	var to = $("#todate").val();
+	window.location = "/user/view/?from=" + from + "&to=" + to; 
+}
 const filterexport = () => {
 	var from = $("#fromdate").val();
 	var to = $("#todate").val();

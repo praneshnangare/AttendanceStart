@@ -3,6 +3,7 @@ package com.example.demo.controllers;
 import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -102,8 +103,19 @@ public class AttendanceController {
 	}
 
 	@PostMapping("/save")
-	public String saveRecords(@ModelAttribute("form") AttendanceForm b, HttpSession session) {
-		attendanceDAO.saveAll(b.getAttendanceList());
+	public String saveRecords(@ModelAttribute("form") AttendanceForm b, Model model , HttpSession session) {
+		List<Attendance> ls = b.getAttendanceList();
+		List<String> s = Arrays.asList("present", "halfDay", "absent");
+		for(Attendance a : ls) {
+			if(s.contains(a.getStatus())) {
+				a.setAttendanceDate(b.getDate());
+			}
+			else {
+				session.setAttribute("message" , new Message("Attendance Could not be saved. Please save it again!" , "alert-danger"));
+				return "admin/Mark_Attendance";
+			}
+		}
+		attendanceDAO.saveAll(ls);
 		b.getAttendanceList().stream().forEach(x -> System.out.println(x.getUser().getName()));
 		if ((boolean) b.getNotify()) {
 			String message = "You have been marked : ";
@@ -129,11 +141,12 @@ public class AttendanceController {
 		List<User> users = this.userDAO.findByRole("ROLE_USER");
 		List<Attendance> records = null;
 		if ("".equals(employee)) {
-			records = attendanceDAO.findByAttendanceDateBetween(from, to);
+			records = attendanceDAO.findByAttendanceDateBetweenOrderByAttendanceDateAsc(from, to);
 		} else {
-			records = attendanceDAO.findByNameAndAttendanceDateBetween(employee, from, to);
+			records = attendanceDAO.findByNameAndAttendanceDateBetweenOrderByAttendanceDateAsc(employee, from, to);
 		}
-
+		List<String> datels = records.stream().map(x->sdf.format(x.getAttendanceDate())).collect(Collectors.toList());
+		model.addAttribute("datels" , datels);
 		model.addAttribute("selectedEmp", employee);
 		model.addAttribute("records", records);
 		model.addAttribute("users", users);

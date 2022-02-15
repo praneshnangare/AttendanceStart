@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
-	th:replace="admin/base::layout(~{::section})">
+	th:replace="normal/base::layout(~{::section})">
 <head>
 <meta charset="ISO-8859-1">
 <title>This is Admin dashboard</title>
@@ -17,26 +17,14 @@
 					<div class="text-center mb-3 mt-3 ml-3 line">
 						<h5 class="mr-2" style="display: inline-block">From Date :</h5>
 						<input type="date" th:value="${fromDate}" id="fromdate"
-							onchange="filter();" />
+							onchange="filterNormal();" />
 					</div>
 					
 					<div class="text-center mb-3 mt-3 ml-3 line">
 						<h5 class="mr-2" style="display: inline-block">To Date :</h5>
 						<input type="date" th:value="${toDate}" id="todate"
-							onchange="filter();" />
+							onchange="filterNormal();" />
 					</div>
-					
-					<div class="text-center mb-3 mt-3 ml-3 line">
-						<h5 class="mr-2" style="display: inline-block">Employee :</h5>
-						<select class="p-1" type="text" id="emp" th:value="${selectedUser}"
-							onchange="filter();">
-							<option value="">--All--</option>
-							<option th:each="user : ${users}" th:value="${user.name}" th:selected="${user.name==selectedEmp}"
-								th:text="${user.name}"></option>
-						</select>
-					</div>
-					<div class="text-center mb-3 mt-3 ml-3 line"><a class = "btn btn-primary" 
-					onclick="filterexport();">Export</a></div>
 				</div>
 				
 				<div class="table-responsive">
@@ -44,7 +32,6 @@
 						<thead class="thead-light ">
 							<tr>
 								<th scope="col">Date</th>
-								<th scope="col">Name</th>
 								<th scope="col">Status</th>
 								<th scope="col">Extra Hours</th>
 								<th scope="col">Remarks</th>
@@ -53,7 +40,6 @@
 						<tbody>
 							<tr th:each="c : ${records}">
 								<td><span th:text="${datels[__${cStat.index}__]}"></span></td>
-								<td><span th:text="${c.name}"></span></td>
 								<td><span th:text = "${c.status}"></span></td>
 								<td><span th:text = "${c.extraHours}"></span></td>
 								<td><span th:text = "${c.remarks}"></span></td>
