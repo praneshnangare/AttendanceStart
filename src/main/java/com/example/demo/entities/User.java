@@ -39,6 +39,7 @@ public class User {
 	private String gender;
 	@Temporal(TemporalType.DATE)
 	private Date DOJ;
+	private String panCard;
 	
 	
 	@OneToMany(cascade = CascadeType.ALL, fetch =  FetchType.LAZY , mappedBy = "user")
@@ -58,6 +59,16 @@ public class User {
 	}
 	
 	
+	public String getPanCard() {
+		return panCard;
+	}
+
+
+	public void setPanCard(String panCard) {
+		this.panCard = panCard;
+	}
+
+
 	public PaymentInfo getPaymentInfo() {
 		return paymentInfo;
 	}

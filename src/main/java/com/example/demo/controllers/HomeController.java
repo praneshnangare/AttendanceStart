@@ -83,29 +83,33 @@ public class HomeController {
 			List<User> user1 = userDAO.findAllByMobile(user.getMobile());
 			List<User> user2 = userDAO.findAllByName(user.getName());
 			List<User> user3 = userDAO.findAllByAdhar(user.getAdhar());
-			if(user1.size() > 1) {
+			List<User> user4 = userDAO.findAllByEmail(user.getEmail());
+			if(user1.size() > 0) {
 				throw new Exception("User already exists with same Mobile Number!");
 			}
-			if(user2.size() > 1) {
+			if(user2.size() > 0) {
 				throw new Exception("User already exists with same Name!");
 			}
-			if(user3.size() > 1) {
+			if(user3.size() > 0) {
 				throw new Exception("User already exists with same Adhar!");
+			}
+			if(user4.size() > 0) {
+				throw new Exception("User already exists with same Email!");
 			}
 			user.setRole("ROLE_USER");
 			user.setEnabled(true);
 			user.setPassword(passwordEncoder.encode(user.getPassword()));
 			user.setDOJ(new Date());
 			User result = this.userDAO.save(user);
-			model.addAttribute("user" , new User());
-			model.addAttribute("message", new Message("Successfully registered" , "alert-success"));
-			
+			//model.addAttribute("user" , new User());
+			session.setAttribute("message", new Message("Successfully registered" , "alert-success"));
+			return "redirect:/signin";
 			
 		} catch (Exception e) {
 			// TODO: handle exception
 			e.printStackTrace();
 			model.addAttribute("user" , user);
-			model.addAttribute("message", new Message("Something went wrong !! "+e.getMessage() , "alert-danger"));
+			session.setAttribute("message", new Message("Something went wrong !! "+e.getMessage() , "alert-danger"));
 		}
 		if(standalone) {
 			model.addAttribute("standalone" , standalone);
@@ -116,7 +120,7 @@ public class HomeController {
 //handler for custom login
 	
 	@GetMapping("/signin")
-	public String customLogin(Model model) {
+	public String customLogin(Model model ,HttpSession session) {
 		model.addAttribute("title","Login Page");
 		return "login";
 	}

@@ -36,4 +36,6 @@ public interface UserDAO extends JpaRepository<User, Integer>{
 	public List<User> findAllByAdhar(String adhar);
 
 	public List<User> findAllByName(String name);
+
+	public List<User> findAllByEmail(String email);
 }

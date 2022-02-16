@@ -96,7 +96,7 @@ public class AdminController {
 		return "redirect:/admin/show-employee/0";
 	}
 	
-	@PostMapping("/update/{id}")
+	@GetMapping("/update/{id}")
 	public String updateEmployee(@PathVariable("id") Integer id , Model m ) {
 		m.addAttribute("title" , "Update Employee");
 		User user = this.userDAO.findById(id).get();

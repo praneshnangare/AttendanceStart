@@ -39,3 +39,10 @@ const filterexport = () => {
 	var emp = $("#emp").val();
 	window.location = "/admin/downloadRecords/?from=" + from + "&to=" + to +"&emp=" + emp; 
 }
+
+const updateEmployee = (id) => {
+	window.location = "/admin/update/"+id;
+}
+const viewEmployee = (id) => {
+	window.location = "/admin/view-employee/"+id;
+}

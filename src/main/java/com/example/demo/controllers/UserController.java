@@ -3,7 +3,9 @@ package com.example.demo.controllers;
 import java.security.Principal;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpSession;
 
@@ -69,6 +71,18 @@ public class UserController {
 		List<Attendance> ls= attendanceDAO.findByNameAndAttendanceDateBetweenOrderByAttendanceDateAsc(user.getName(),from , to);
 		
 		List<String> datels = ls.stream().map(x->sdf.format(x.getAttendanceDate())).collect(Collectors.toList());
+		Integer total = 0;
+		Map<String, Integer> map = new HashMap<String, Integer>();
+		map.put("present" , 0);
+		map.put("absent" , 0);
+		map.put("halfDay" , 0);
+		map.put("total" , ls.size());
+		
+		for(Attendance x : ls) {
+			datels.add(sdf.format(x.getAttendanceDate()));
+			map.put(x.getStatus() , map.get(x.getStatus())+1);
+		}
+		model.addAttribute("maps", map);
 		model.addAttribute("records" , ls);
 		model.addAttribute("datels" , datels);
 		model.addAttribute("title" , "View Attendance");

@@ -29,24 +29,14 @@
 						<tbody>
 
 
-							<tr th:each="c : ${users}">
-
-								<!-- <th scope="row" th:text="${'SCMUSER'+c.cId}">1</th> -->
-
+							<tr th:onclick = "|viewEmployee(${c.id})|" th:each="c : ${users}">
 								<td><span th:text="${c.name}"></span></td>
-
-								<td><a href="#" th:href="@{'/admin/view-employee/' + ${c.id}}">
-
-										<span th:text="${c.email}"></span>
-
-								</a></td>
-
+								<td><span th:text="${c.email}"></span></td>
 								<td th:text="${c.mobile}">@mdo</td>
 								<td th:text="${c.DOJ}">@mdo</td>
 								<td>
 									<button th:onclick = "|deleteEmployee(${c.id})|" class="btn btn-danger btn-sm">Delete</button>
-									<form method = "post" th:action="@{'/admin/update/' + ${c.id}}">
-									<button type = "submit" class="btn btn-primary btn-sm">Update</button>
+									<button type = "submit" th:onclick="|updateEmployee(${c.id})|" class="btn btn-primary btn-sm">Update</button>
 									</form>
 								</td>
 							</tr>

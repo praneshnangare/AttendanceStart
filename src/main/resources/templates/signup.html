@@ -12,10 +12,10 @@
 				<div class="col-md-8 offset-md-2">
 					<div class="my-card mt-5">
 						
-						<div th:if="${message}" th:classappend="${message.type}" class="alert alert-primary" role="alert">
+						<!-- <div th:if="${message}" th:classappend="${message.type}" class="alert alert-primary" role="alert">
  							 <p class="text-center" th:text="${message.content}">
  							 
-						</div>
+						</div> -->
 						
 						<div class="container text-center">
 							<img style="width: 80px" alt="" th:src="@{/img/register.png}"
@@ -70,6 +70,17 @@
 										placeholder="Enter Adhar here" class="form-control" />
 								</div>
 
+								<!-- Pan Card -->
+								<div class="input-group mt-3">
+									<div class="input-group-prepend">
+										<div class="input-group-text ">
+											<i class="fas fa-user-alt"></i>
+										</div>
+									</div>
+									<input type="text" id="panCard" th:field="*{panCard}"
+										placeholder="Enter PAN Card number here" class="form-control" />
+								</div>
+								
 								<!--  Per Day -->
 
 								<div class="input-group mt-3">
@@ -107,18 +118,17 @@
 									</div>
 								</div>
 
-
-
-							<!-- Terms and conditions -->
-							<div class="form-group form-check text-center">
-								<input type="checkbox" name="agreement" class="form-check-input"
-									id="agreement" /> <label for="agreement">Accept terms
-									and conditions</label>
-							</div>
-							<div class="container text-center">
-								<button type="submit" class="btn bg-primary text-white">Submit</button>
-								<button type="reset" class="btn btn-warning text-white">Reset</button>
-							</div>
+								<!-- Terms and conditions -->
+								<div class="form-group form-check text-center">
+									<input type="checkbox" name="agreement" class="form-check-input"
+										id="agreement" /> <label for="agreement">Accept terms
+										and conditions</label>
+								</div>
+								
+								<div class="container text-center">
+									<button type="submit" class="btn bg-primary text-white">Submit</button>
+									<button type="reset" class="btn btn-warning text-white">Reset</button>
+								</div>
 						</form>
 
 					</div>

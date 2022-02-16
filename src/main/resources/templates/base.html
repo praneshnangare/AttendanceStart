@@ -53,9 +53,9 @@
 
 
 	<!-- Content Area -->
-	<div style="padding-top: 10px;">
+	<div style="padding-top: 10px;" class="parentDiv">
 		<!-- message box  -->
-		  <div th:if="${session.message}" class="container mt-5">
+		  <div th:if="${session.message}" class="container mt-5 alertDiv">
 
 					<div th:classappend="${session.message.type}"
 						class="alert  text-center" role="alert">

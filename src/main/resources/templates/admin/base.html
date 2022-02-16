@@ -83,7 +83,7 @@
 	<div class="content mt-5">
 		<i class="fas fa-bars m-3 three-lines" onclick="toggleSidebar();"></i>
 		<!-- message box  -->
-		<div th:if="${session.message}" class="container">
+		<div th:if="${session.message}" class="container alertDiv">
 
 			<div th:classappend="${session.message.type}"
 				class="alert  text-center" role="alert">

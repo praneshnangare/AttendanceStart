@@ -65,8 +65,20 @@
 	<!-- End Sidebar -->
 
 	<!-- Content Area -->
-	<div class="content mt-5">
+	<div class="content mt-5 parentDiv">
 	<i class = "fas fa-bars m-3" onclick = "toggleSidebar();"></i>
+	<div th:if="${session.message}" class="container mt-5 alertDiv">
+
+			<div th:classappend="${session.message.type}"
+				class="alert  text-center" role="alert">
+
+				<span th:text="${session.message.content}"></span>
+
+			</div>
+
+			<th:block th:text="${#session.removeAttribute('message')}"></th:block>
+		</div>
+		
 		<div th:replace=${content}></div>
 	</div>
 	<!-- end of content area -->
