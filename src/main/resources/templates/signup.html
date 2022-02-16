@@ -34,7 +34,7 @@
 											<i class="fa fa-plus"></i>
 										</div>
 									</div>
-									<input required type="text" id="name" name="name"
+									<input required type="text" id="name" th:field="*{name}"
 										placeholder="Enter Name here" class="form-control" />
 								</div>
 
@@ -45,7 +45,7 @@
 											<i class="fa fa-phone"></i>
 										</div>
 									</div>
-									<input required  type="tel" maxlength="10" minlength="10" id="phone" name="mobile"
+									<input required  type="tel" maxlength="10" minlength="10" id="phone" th:field="*{mobile}"
 										placeholder="Enter WhatsApp Number  here" class="form-control" />
 								</div>
 
@@ -55,7 +55,7 @@
 									<div class="input-group-prepend">
 										<div class="input-group-text ">@</div>
 									</div>
-									<input type="email" id="email" name="email"
+									<input type="email" id="email" th:field="*{email}"
 										placeholder="Enter email here" class="form-control" />
 								</div>
 
@@ -66,7 +66,7 @@
 											<i class="fas fa-user-alt"></i>
 										</div>
 									</div>
-									<input required type="text" id="adhar" name="adhar"
+									<input required type="text" id="adhar" th:field="*{adhar}"
 										placeholder="Enter Adhar here" class="form-control" />
 								</div>
 
@@ -78,7 +78,7 @@
 											<i class="fa fa-briefcase"></i>
 										</div>
 									</div>
-									<input required type="number" id="perDay" name="perDay"
+									<input required type="number" id="perDay" th:field="*{perDay}"
 										placeholder="Enter PerDay here" class="form-control" />
 								</div>
 
@@ -94,21 +94,23 @@
 								</div>
 								
 								<!-- Gender Selection -->
-								<div class="form-check form-check-inline">
-									<input class="form-check-input" type="radio" name="gender"
-										id="inlineRadio1" value="male"> <label
-										class="form-check-label" for="inlineRadio1">Male</label>
-								</div>
-								<div class="form-check form-check-inline">
-									<input class="form-check-input" type="radio" name="gender"
-										id="inlineRadio2" value="female"> <label
-										class="form-check-label" for="inlineRadio2">Female</label>
+								<div class="mt-3 mb-3 text-center">
+									<div class="form-check form-check-inline mr-5">
+										<input class="form-check-input" type="radio"
+											th:field="*{gender}" id="inlineRadio1" th:value="male">
+										<label class="form-check-label" for="inlineRadio1">Male</label>
+									</div>
+									<div class="form-check form-check-inline ml-5">
+										<input class="form-check-input" type="radio"
+											th:field="*{gender}" id="inlineRadio2" th:value="female">
+										<label class="form-check-label" for="inlineRadio2">Female</label>
+									</div>
 								</div>
 
 
 
 							<!-- Terms and conditions -->
-							<div class="form-group form-check">
+							<div class="form-group form-check text-center">
 								<input type="checkbox" name="agreement" class="form-check-input"
 									id="agreement" /> <label for="agreement">Accept terms
 									and conditions</label>

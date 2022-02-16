@@ -80,18 +80,18 @@
 									<input th:value="${employee.perDay}" required type="number" id="perDay" name="perDay"
 										placeholder="Enter PerDay here" class="form-control" />
 								</div>
-
-								<div class="form-check form-check-inline">
-									<input class="form-check-input" type="radio" name="gender"
-										id="inlineRadio1" value="Male"> <label
-										class="form-check-label" for="inlineRadio1">Male</label>
+								<div class="mt-3 mb-3 text-center">
+									<div class="form-check form-check-inline mr-5">
+										<input class="form-check-input" type="radio"
+											th:field="*{gender}" id="inlineRadio1" th:value="male">
+										<label class="form-check-label" for="inlineRadio1">Male</label>
+									</div>
+									<div class="form-check form-check-inline ml-5">
+										<input class="form-check-input" type="radio"
+											th:field="*{gender}" id="inlineRadio2" th:value="female">
+										<label class="form-check-label" for="inlineRadio2">Female</label>
+									</div>
 								</div>
-								<div class="form-check form-check-inline">
-									<input class="form-check-input" type="radio" name="gender"
-										id="inlineRadio2" value="Female"> <label
-										class="form-check-label" for="inlineRadio2">Female</label>
-								</div>
-
 								<div class="container text-center">
 									<button class="btn btn-outline-primary">Save Employee</button>
 								</div>

@@ -81,12 +81,16 @@ public class HomeController {
 				throw new Exception("You have not agreed terms and conditions.");
 			}
 			List<User> user1 = userDAO.findAllByMobile(user.getMobile());
-			
-			if(user1.size() == 1) {
-				throw new Exception("User already exists! Please contact administrator.");
+			List<User> user2 = userDAO.findAllByName(user.getName());
+			List<User> user3 = userDAO.findAllByAdhar(user.getAdhar());
+			if(user1.size() > 1) {
+				throw new Exception("User already exists with same Mobile Number!");
 			}
-			else if(user1.size() > 1) {
-				throw new Exception("Multiple users exist!");
+			if(user2.size() > 1) {
+				throw new Exception("User already exists with same Name!");
+			}
+			if(user3.size() > 1) {
+				throw new Exception("User already exists with same Adhar!");
 			}
 			user.setRole("ROLE_USER");
 			user.setEnabled(true);
