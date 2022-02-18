@@ -98,6 +98,7 @@ public class AttendanceController {
 		}
 
 		attendanceForm.setDate(date);
+		model.addAttribute("title" , "Mark Attendance");
 		model.addAttribute("form", attendanceForm);
 		return "admin/Mark_Attendance";
 	}
@@ -105,7 +106,7 @@ public class AttendanceController {
 	@PostMapping("/save")
 	public String saveRecords(@ModelAttribute("form") AttendanceForm b, Model model , HttpSession session) {
 		List<Attendance> ls = b.getAttendanceList();
-		List<String> s = Arrays.asList("present", "halfDay", "absent");
+		List<String> s = Arrays.asList("present", "halfDay", "absent" , "");
 		for(Attendance a : ls) {
 			if(s.contains(a.getStatus())) {
 				a.setAttendanceDate(b.getDate());
@@ -116,7 +117,6 @@ public class AttendanceController {
 			}
 		}
 		attendanceDAO.saveAll(ls);
-		b.getAttendanceList().stream().forEach(x -> System.out.println(x.getUser().getName()));
 		if ((boolean) b.getNotify()) {
 			String message = "You have been marked : ";
 

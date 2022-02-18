@@ -37,23 +37,26 @@ public class AdminController {
 	@Autowired
 	private BCryptPasswordEncoder passwordEncoder;
 	
-//	@ModelAttribute
-//	public void add_common_data(Model model, Principal principal) {
-//		String username = principal.getName();
-//		User admin = userDAO.getUserByUsername(username);
-//		model.addAttribute("admin", admin);
-//	}
+	@ModelAttribute
+	public void add_common_data(Model model, Principal principal , HttpSession session) {
+		
+		User user = (User)session.getAttribute("user");
+		if(user == null && principal != null) {
+			String username = principal.getName();
+			user = userDAO.getUserByUsername(username);
+			session.setAttribute("user", user);
+		}
+	}
 
 	@GetMapping("index")
-	public String get_index(Principal principal, HttpSession session) {
-		String username = principal.getName();
-		User admin = userDAO.getUserByUsername(username);
-		session.setAttribute("admin", admin);
+	public String get_index(Principal principal, Model model) {
+		model.addAttribute("title", "Admin Dashboard");
 		return "admin/admin_dashboard";
 	}
 
 	@GetMapping("add-user")
 	public String addUser(Model model) {
+		model.addAttribute("title" , "Add Employee");
 		model.addAttribute("employee", new User());
 		return "admin/add_employee";
 	}
@@ -74,6 +77,7 @@ public class AdminController {
 		m.addAttribute("title", "Show Employees");
 		Pageable pageable = PageRequest.of(page, 7);
 		Page<User> users = this.userDAO.findByRole("ROLE_USER", pageable);
+		
 		m.addAttribute("users", users);
 		m.addAttribute("currentpage", page);
 		m.addAttribute("TotalPages", users.getTotalPages());
@@ -84,6 +88,7 @@ public class AdminController {
 	public String viewemployee(@PathVariable("id") Integer id, Model m) {
 		Optional<User> userOptional = this.userDAO.findById(id);
 		User user = userOptional.get();
+		m.addAttribute("title" , "View Employee");
 		m.addAttribute("employee", user);
 		m.addAttribute("title", "View Employee Details");
 		return "admin/view_employee";

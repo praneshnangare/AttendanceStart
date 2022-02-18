@@ -42,11 +42,15 @@ public class MyConfig extends WebSecurityConfigurerAdapter{
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
 		http.authorizeRequests().antMatchers("/admin/**").hasRole("ADMIN")
-		.antMatchers("/user/**").hasRole("USER")
+		.antMatchers("/**").hasRole("USER")
 		.antMatchers("/**").permitAll()
 		.and().formLogin().loginPage("/signin")
 		.loginProcessingUrl("/dologin")
 		.successHandler(myAuthenticationSuccessHandler())
+		.and().rememberMe()
+	    .tokenValiditySeconds(7 * 24 * 60 * 60) // expiration time: 7 days
+	    .key("AbcdefghiJklmNoPqRstUvXyz")
+	    .userDetailsService(getUserDetailsService())// cookies will survive if restarted
 		.and().csrf().disable();
 	}
 	

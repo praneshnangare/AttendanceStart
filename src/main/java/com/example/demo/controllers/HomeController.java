@@ -1,5 +1,6 @@
 package com.example.demo.controllers;
 
+import java.security.Principal;
 import java.util.Date;
 import java.util.List;
 import java.util.Random;
@@ -13,6 +14,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -37,10 +39,31 @@ public class HomeController {
 	private boolean  standalone = false;
 	private User temp;
 	
+	@ModelAttribute
+	public void add_data(Principal principal , HttpSession session) {
+		User user = (User) session.getAttribute("user");
+		if(user == null && principal != null) {
+			String username = principal.getName();
+			user = userDAO.getUserByUsername(username);
+			session.setAttribute("user", user);
+		}
+	}
+	
 	@RequestMapping("/")
-	public String home(Model model) {
+	public String home(Model model, HttpSession session) {
 		model.addAttribute("title" ,"Pranesh Enterprises");
+		User user = (User) session.getAttribute("user");
+		if(user == null) {
 		return "home";
+		}
+		else {
+			if(user.getRole().equals("admin")) {
+				 return "redirect:/admin/index";
+			}
+			else {
+				return "redirect:/user/index";
+			}
+		}
 	}
 	
 	@RequestMapping("/about")
@@ -72,7 +95,7 @@ public class HomeController {
 	 * @param session
 	 * @return
 	 */
-	@RequestMapping(value = "/do_register" , method=RequestMethod.POST)
+	@PostMapping(value = "/do_register")
 	public String registeruser(@ModelAttribute("user") User user , 
 			@RequestParam(value = "agreement" , defaultValue = "false") boolean agreement , 
 			Model model ,HttpSession session) {
@@ -100,13 +123,11 @@ public class HomeController {
 			user.setEnabled(true);
 			user.setPassword(passwordEncoder.encode(user.getPassword()));
 			user.setDOJ(new Date());
-			User result = this.userDAO.save(user);
-			//model.addAttribute("user" , new User());
+			this.userDAO.save(user);
 			session.setAttribute("message", new Message("Successfully registered" , "alert-success"));
 			return "redirect:/signin";
 			
 		} catch (Exception e) {
-			// TODO: handle exception
 			e.printStackTrace();
 			model.addAttribute("user" , user);
 			session.setAttribute("message", new Message("Something went wrong !! "+e.getMessage() , "alert-danger"));
@@ -162,7 +183,7 @@ public class HomeController {
 			model.addAttribute("otpverified" , otpverified);
 			model.addAttribute("form_dest" , "/forgot-password/submitvalue");
 		}
-		
+		model.addAttribute("title" , "Forgot Password");
 		return "forgot-password";
 	}
 	
@@ -184,7 +205,7 @@ public class HomeController {
 			model.addAttribute("otpverified" , otpverified);
 			model.addAttribute("form_dest" , "/forgot-password/submit-otp-reset");
 		}
-		
+		model.addAttribute("title" , "Forgot Password");
 		return "forgot-password";
 	}
 	
@@ -203,7 +224,7 @@ public class HomeController {
 		}
 		otpsent = false;
 		otpverified  = false;
-		
+		model.addAttribute("title" , "Forgot Password");
 		model.addAttribute("otpsent" , otpsent);
 		model.addAttribute("otpverified" , otpverified);
 		model.addAttribute("form_dest" , "/forgot-password/submitvalue");

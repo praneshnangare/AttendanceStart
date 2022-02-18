@@ -41,10 +41,14 @@ public class UserController {
 		binder.registerCustomEditor(Date.class, new CustomDateEditor(new SimpleDateFormat("yyyy-MM-dd"), true));
 	}
 	@ModelAttribute
-	public void add_common_data(Model model, Principal principal) {
-		String username = principal.getName();
-		User user = userDAO.getUserByUsername(username);
-		model.addAttribute("user", user);
+	public void add_common_data(Model model, Principal principal , HttpSession session) {
+		
+		User user = (User)session.getAttribute("user");
+		if(user == null && principal != null) {
+			String username = principal.getName();
+			user = userDAO.getUserByUsername(username);
+			session.setAttribute("user", user);
+		}
 	}
 	
 	@RequestMapping("/index")
@@ -52,6 +56,7 @@ public class UserController {
 		String username = principal.getName();
 		User user = userDAO.getUserByUsername(username);
 		session.setAttribute("user", user);
+		model.addAttribute("title" , "Dashboard");
 		return "normal/user_dashboard";
 	}
 	
