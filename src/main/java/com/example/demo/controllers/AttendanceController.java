@@ -153,12 +153,12 @@ public class AttendanceController {
 	@GetMapping("/fetchRecords/")
 	public String getAttendance(@RequestParam("from") Date from, @RequestParam("to") Date to,
 			@RequestParam("emp") String employee, Model model) {
-		List<User> users = this.userDAO.findByRole("ROLE_USER");
+		List<User> users = this.userDAO.findByRoleOrderByNameAsc("ROLE_USER");
 		List<Attendance> records = null;
 		if ("".equals(employee)) {
-			records = attendanceDAO.findByAttendanceDateBetweenOrderByAttendanceDateAsc(from, to);
+			records = attendanceDAO.findByAttendanceDateBetweenOrderByNameAsc(from, to);
 		} else {
-			records = attendanceDAO.findByNameAndAttendanceDateBetweenOrderByAttendanceDateAsc(employee, from, to);
+			records = attendanceDAO.findByNameAndAttendanceDateBetween(employee, from, to);
 		}
 		List<String> datels = records.stream().map(x->sdf.format(x.getAttendanceDate())).collect(Collectors.toList());
 		model.addAttribute("datels" , datels);
@@ -185,7 +185,7 @@ public class AttendanceController {
 		List<Attendance> records = null;
 		if ("".equals(employee)) {
 			records = attendanceDAO.findByAttendanceDateBetween(from, to);
-			users = this.userDAO.findByRole("ROLE_USER");
+			users = this.userDAO.findByRoleOrderByNameAsc("ROLE_USER");
 		} else {
 			records = attendanceDAO.findByNameAndAttendanceDateBetween(employee, from, to);
 			users = this.userDAO.findByName(employee);
@@ -199,7 +199,7 @@ public class AttendanceController {
 		Map<User, List<Attendance>> map = new HashMap<User, List<Attendance>>();
 		for (User user : users) {
 
-			List<Attendance> ls = records.stream().filter(record -> record.getName().equals(user.getName()))
+			List<Attendance> ls = records.stream().filter(record -> record.getUser().getName().equals(user.getName()))
 					.collect(Collectors.toList());
 			map.put(user, ls);
 

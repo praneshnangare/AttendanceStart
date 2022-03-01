@@ -53,7 +53,7 @@
 						<tbody>
 							<tr th:each="c : ${records}">
 								<td><span th:text="${datels[__${cStat.index}__]}"></span></td>
-								<td><span th:text="${c.name}"></span></td>
+								<td><span th:text="${c.user.name}"></span></td>
 								<td><span th:text = "${c.status}"></span></td>
 								<td><span th:text = "${c.extraHours}"></span></td>
 								<td><span th:text = "${c.remarks}"></span></td>

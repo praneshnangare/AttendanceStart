@@ -39,7 +39,7 @@
 								
 								<input type="hidden" th:field="*{attendanceList[__${itemStat.index}__].atdId}"/>
 								
-								<td th:text = "*{attendanceList[__${itemStat.index}__].name}" ></td>
+								<td th:text = "*{attendanceList[__${itemStat.index}__].user.name}" ></td>
 
 								<!-- Status -->
 								<td >

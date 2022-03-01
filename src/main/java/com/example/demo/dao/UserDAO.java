@@ -40,4 +40,6 @@ public interface UserDAO extends JpaRepository<User, Integer>{
 	public List<User> findAllByEmail(String email);
 
 	public Page<User> findByRoleOrderByNameAsc(String string, Pageable pageable);
+
+	public List<User> findByNameOrderByNameAsc(String employee);
 }
