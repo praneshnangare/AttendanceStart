@@ -1,6 +1,7 @@
 package com.example.demo.controllers;
 
 import java.io.IOException;
+import java.security.Principal;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
@@ -8,7 +9,6 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 import javax.servlet.http.HttpServletResponse;
@@ -16,13 +16,14 @@ import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -32,7 +33,6 @@ import com.example.demo.dao.PaymentInfoDAO;
 import com.example.demo.dao.UserDAO;
 import com.example.demo.entities.Attendance;
 import com.example.demo.entities.AttendanceForm;
-import com.example.demo.entities.PaymentInfo;
 import com.example.demo.entities.User;
 import com.example.demo.helper.ExcelExporter;
 import com.example.demo.helper.Message;
@@ -57,7 +57,18 @@ public class AttendanceController {
 	public void initDateBinder(final WebDataBinder binder) {
 		binder.registerCustomEditor(Date.class, new CustomDateEditor(new SimpleDateFormat("yyyy-MM-dd"), true));
 	}
-
+	
+	@ModelAttribute
+	public void addCommonData(Model model, Principal principal , HttpSession session) {
+		
+		User user = (User)session.getAttribute("user");
+		if(user == null && principal != null) {
+			String username = principal.getName();
+			user = userDAO.getUserByUsername(username);
+			session.setAttribute("user", user);
+		}
+	}
+	
 	@GetMapping("/mark-attendance")
 	public String showCreateForm(Model model) throws ParseException {
 		Date date = new Date();
@@ -67,8 +78,9 @@ public class AttendanceController {
 	@GetMapping("/mark-attendance/")
 	public String markattendance(@RequestParam("date") Date date, Model model) {
 
-		List<User> users = this.userDAO.findByRole("ROLE_USER");
-		List<Attendance> records = this.attendanceDAO.findByAttendanceDate(date);
+		//List<User> users = this.userDAO.findByRole("ROLE_USER");
+		List<User> users = this.userDAO.findByRoleOrderByNameAsc("ROLE_USER");
+		List<Attendance> records = this.attendanceDAO.findByAttendanceDateOrderByNameAsc(date);
 		AttendanceForm attendanceForm = new AttendanceForm();
 		if (records.size() != users.size()) {
 			for (User user : users) {
@@ -109,6 +121,9 @@ public class AttendanceController {
 		List<String> s = Arrays.asList("present", "halfDay", "absent" , "");
 		for(Attendance a : ls) {
 			if(s.contains(a.getStatus())) {
+				if(a.getStatus().equals("")) {
+					a.setStatus("absent");
+				}
 				a.setAttendanceDate(b.getDate());
 			}
 			else {

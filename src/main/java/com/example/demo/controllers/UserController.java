@@ -41,7 +41,7 @@ public class UserController {
 		binder.registerCustomEditor(Date.class, new CustomDateEditor(new SimpleDateFormat("yyyy-MM-dd"), true));
 	}
 	@ModelAttribute
-	public void add_common_data(Model model, Principal principal , HttpSession session) {
+	public void addCommonData(Model model, Principal principal , HttpSession session) {
 		
 		User user = (User)session.getAttribute("user");
 		if(user == null && principal != null) {

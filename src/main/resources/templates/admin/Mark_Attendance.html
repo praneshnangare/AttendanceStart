@@ -40,31 +40,34 @@
 								<input type="hidden" th:field="*{attendanceList[__${itemStat.index}__].atdId}"/>
 								
 								<td th:text = "*{attendanceList[__${itemStat.index}__].name}" ></td>
-								
+
 								<!-- Status -->
-								<td><div class="form-check form-check-inline">
-									<input class="form-check-input" type="radio" 
-									 th:field="*{attendanceList[__${itemStat.index}__].status}"
-										th:id="presentId1 + ${itemStat.index}" value="present" checked = "checked"> 
-										
-									<label class="form-check-label" th:for="presentId1 + ${itemStat.index}"
-									>Present</label>
-								</div>
-								
-								<div class="form-check form-check-inline">
-									<input class="form-check-input" type="radio" th:field="*{attendanceList[__${itemStat.index}__].status}"
-										th:id="absentId + ${itemStat.index}" value="absent"> <label
-										class="form-check-label" th:for="absentId + ${itemStat.index}">Absent</label>
-								</div>
-								
-								<div class="form-check form-check-inline">
-									<input class="form-check-input" type="radio" th:field="*{attendanceList[__${itemStat.index}__].status}"
-										th:id="halfDayId + ${itemStat.index}" value="halfDay"> <label
-										class="form-check-label" th:for="halfDayId + ${itemStat.index}">Half-Day</label>
-								</div>
-								
+								<td >
+									<div class="form-check form-check-inline">
+										<input class="form-check-input markStatus" type="radio" onchange = "shiftrow(this);"
+											th:field="*{attendanceList[__${itemStat.index}__].status}"
+											th:id="presentId1 + ${itemStat.index}" value="present"
+											checked="checked"> <label class="form-check-label"
+											th:for="presentId1 + ${itemStat.index}">Present</label>
+									</div>
+
+									<div class="form-check form-check-inline">
+										<input class="form-check-input markStatus" type="radio" onchange = "shiftrow(this);"
+											th:field="*{attendanceList[__${itemStat.index}__].status}"
+											th:id="absentId + ${itemStat.index}" value="absent">
+										<label class="form-check-label"
+											th:for="absentId + ${itemStat.index}">Absent</label>
+									</div>
+
+									<div class="form-check form-check-inline">
+										<input class="form-check-input markStatus" type="radio" onchange = "shiftrow(this);"
+											th:field="*{attendanceList[__${itemStat.index}__].status}"
+											th:id="halfDayId + ${itemStat.index}" value="halfDay">
+										<label class="form-check-label"
+											th:for="halfDayId + ${itemStat.index}">Half-Day</label>
+									</div>
 								</td>
-									
+
 								<!-- Extra hours -->
 								<td><input type="number"
 									th:field="*{attendanceList[__${itemStat.index}__].extraHours}"></td>
@@ -74,6 +77,17 @@
 									th:field="*{attendanceList[__${itemStat.index}__].remarks}"></td>
 
 							</tr>
+							
+							<tr id="markedPresentee">
+								<td colspan="2"><h4>Present Employees</h4></td>
+							</tr>
+							<tr id="markedAbsentee">
+								<td colspan="2"><h4>Absent Employees</h4></td>
+							</tr>
+							<tr id="markedHalfDay">
+								<td colspan="2"><h4>HalfDay Employees</h4></td>
+							</tr>
+							
 							<tr><td><input id = "notifyOverWhatsapp" th:field="*{notify}" type="checkbox" value = "true">
 							Notify Over WhatsApp</td></tr>
 						</table>

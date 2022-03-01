@@ -40,7 +40,7 @@ public class HomeController {
 	private User temp;
 	
 	@ModelAttribute
-	public void add_data(Principal principal , HttpSession session) {
+	public void addCommonData(Principal principal , HttpSession session) {
 		User user = (User) session.getAttribute("user");
 		if(user == null && principal != null) {
 			String username = principal.getName();
@@ -128,7 +128,7 @@ public class HomeController {
 			return "redirect:/signin";
 			
 		} catch (Exception e) {
-			e.printStackTrace();
+			//e.printStackTrace();
 			model.addAttribute("user" , user);
 			session.setAttribute("message", new Message("Something went wrong !! "+e.getMessage() , "alert-danger"));
 		}

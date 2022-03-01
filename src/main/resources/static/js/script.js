@@ -46,3 +46,30 @@ const updateEmployee = (id) => {
 const viewEmployee = (id) => {
 	window.location = "/admin/view-employee/"+id;
 }
+
+$(".closeBtn").click(function(){
+	$('#alertDivId').hide('fast' , 'swing');
+});
+
+function shiftrow(item){
+	var selected = $(item).val();
+	var currRow = $(item).closest('tr');
+	var presentRow = $("#markedPresentee");
+	var absentRow = $("#markedAbsentee");
+	var halfDayRow = $("#markedHalfDay");
+	if(selected == "present"){
+		currRow.remove();
+        currRow.insertAfter(presentRow);
+	}
+	else if(selected == "absent"){
+		currRow.remove();
+        currRow.insertAfter(absentRow);
+	}
+	else if(selected =="halfDay"){
+		currRow.remove();
+        currRow.insertAfter(halfDayRow);
+	}
+
+}
+
+

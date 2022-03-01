@@ -2,6 +2,7 @@ package com.example.demo.controllers;
 
 import java.security.Principal;
 import java.util.Date;
+import java.util.List;
 import java.util.Optional;
 
 import javax.persistence.metamodel.Metamodel;
@@ -38,7 +39,7 @@ public class AdminController {
 	private BCryptPasswordEncoder passwordEncoder;
 	
 	@ModelAttribute
-	public void add_common_data(Model model, Principal principal , HttpSession session) {
+	public void addCommonData(Model model, Principal principal , HttpSession session) {
 		
 		User user = (User)session.getAttribute("user");
 		if(user == null && principal != null) {
@@ -63,23 +64,52 @@ public class AdminController {
 
 	@PostMapping("save-employee")
 	public String saveUser(Model model, @ModelAttribute User user, HttpSession session) {
-		user.setRole("ROLE_USER");
-		user.setEnabled(true);
-		user.setDOJ(new Date());
-		User result = this.userDAO.save(user);
-		model.addAttribute("employee", new User());
-		session.setAttribute("message", new Message("Employee has been added successfully", "alert-success"));
+		
+		try {
+			
+			List<User> user1 = userDAO.findAllByMobile(user.getMobile());
+			List<User> user2 = userDAO.findAllByName(user.getName());
+			List<User> user3 = userDAO.findAllByAdhar(user.getAdhar());
+			List<User> user4 = userDAO.findAllByEmail(user.getEmail());
+			if(user1.size() > 0) {
+				throw new Exception("User already exists with same Mobile Number!");
+			}
+			if(user2.size() > 0) {
+				throw new Exception("User already exists with same Name!");
+			}
+			if(user3.size() > 0) {
+				throw new Exception("User already exists with same Adhar!");
+			}
+			if(user4.size() > 0) {
+				throw new Exception("User already exists with same Email!");
+			}
+			
+			user.setRole("ROLE_USER");
+			user.setEnabled(true);
+			user.setPassword(passwordEncoder.encode("welcome"));
+			user.setDOJ(new Date());
+			User result = this.userDAO.save(user);
+			model.addAttribute("employee", new User());
+			session.setAttribute("message", new Message("Employee has been added successfully", "alert-success"));
+		}catch (Exception e) {
+			//e.printStackTrace();
+			model.addAttribute("employee", user);
+			session.setAttribute("message", new Message("Something went wrong !! "+e.getMessage() , "alert-danger"));
+		}
 		return "admin/add_employee";
+		
 	}
 
 	@GetMapping("/show-employee/{page}")
 	public String showemployee(@PathVariable("page") Integer page, Model m) {
-		m.addAttribute("title", "Show Employees");
-		Pageable pageable = PageRequest.of(page, 7);
-		Page<User> users = this.userDAO.findByRole("ROLE_USER", pageable);
+		int itemsPerPage = 10;
+		Pageable pageable = PageRequest.of(page, itemsPerPage);
+		Page<User> users = this.userDAO.findByRoleOrderByNameAsc("ROLE_USER", pageable);
 		
+		m.addAttribute("title", "Show Employees");
 		m.addAttribute("users", users);
 		m.addAttribute("currentpage", page);
+		m.addAttribute("startIndex" , page*itemsPerPage);
 		m.addAttribute("TotalPages", users.getTotalPages());
 		return "admin/show_employee";
 	}
@@ -120,6 +150,10 @@ public class AdminController {
 		return "redirect:/admin/view-employee/" + user.getId();
 	}
 	
+	@GetMapping("/profiles")
+	public String profileUpdate() {
+		return "d";
+		}
 	
 }
 
