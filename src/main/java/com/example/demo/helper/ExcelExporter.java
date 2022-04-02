@@ -94,7 +94,7 @@ public class ExcelExporter {
         createCell(row, 1, "Name", style);
         createCell(row , 2 , "Present Days" , style);
         sheet.autoSizeColumn(2);
-        for (int i = 1; i <31 ; i++) {
+        for (int i = 1; i <=31 ; i++) {
         	sheet.setColumnWidth(i+2, 5*256);
         	createCell(row,i+2,i,style); 
         }
