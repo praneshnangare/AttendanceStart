@@ -190,8 +190,9 @@ public class AttendanceController {
 			records = attendanceDAO.findByNameAndAttendanceDateBetween(employee, from, to);
 			users = this.userDAO.findByName(employee);
 		}
+
 		Map<User, List<Attendance>> map = createAttendanceMap(users, records);
-		ExcelExporter excelExporter = new ExcelExporter(map);
+		ExcelExporter excelExporter = new ExcelExporter(map , from , to);
 		excelExporter.export(response);
 	}
 
