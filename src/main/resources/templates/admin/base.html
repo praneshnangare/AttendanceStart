@@ -72,6 +72,8 @@
 		 <a href="#" th:href="@{/admin/mark-attendance}" class="item">Mark Attendance</a> 
 		 
 		 <a href="#" th:href="@{/admin/fetchRecords}"    class="item">Attendance Report</a> 
+		 
+		 <a href="#" th:href="@{/admin/invoice/generateInvoices}"    class="item">Generate Invoices</a> 
 			
 		 <a hidden href="#" class="item">Payment Report</a>
 		 
@@ -116,6 +118,7 @@
 		integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
 		crossorigin="anonymous"></script>
 	<script type="text/javascript" th:src="@{/js/script.js}"></script>
+	<script type="text/javascript" th:src="@{/js/invoice_script.js}"></script>
 	<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 	<script type="text/javascript">
 	function deleteEmployee(id){

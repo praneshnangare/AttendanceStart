@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.SessionAttributes;
 
 import com.example.demo.dao.UserDAO;
@@ -63,7 +64,7 @@ public class AdminController {
 	}
 
 	@PostMapping("save-employee")
-	public String saveUser(Model model, @ModelAttribute User user, HttpSession session) {
+	public String saveUser(Model model, @ModelAttribute User user,@RequestParam("isAdmin") Boolean isAdmin, HttpSession session) {
 		
 		try {
 			
@@ -83,8 +84,8 @@ public class AdminController {
 			if(user4.size() > 0) {
 				throw new Exception("User already exists with same Email!");
 			}
-			
-			user.setRole("ROLE_USER");
+			if(isAdmin) {user.setRole("ROLE_ADMIN");}
+			else {user.setRole("ROLE_USER");}
 			user.setEnabled(true);
 			user.setPassword(passwordEncoder.encode("welcome"));
 			user.setDOJ(new Date());
@@ -135,7 +136,6 @@ public class AdminController {
 	public String updateEmployee(@PathVariable("id") Integer id , Model m ) {
 		m.addAttribute("title" , "Update Employee");
 		User user = this.userDAO.findById(id).get();
-		System.out.println("ud->  " + user.getId());
 		m.addAttribute("employee" , user);
 		return "admin/update_employee";
 	}

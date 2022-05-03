@@ -149,7 +149,17 @@ z-index : 999;
 	min-width: max-content;
 }
 
+.hidden{
+	display:none;
+}
 
+.itemEntrySelect{
+	min-width:28%;
+	max-width:39%;
+}
+.small-boxes{
+	max-width:16%;
+}
 
 
 

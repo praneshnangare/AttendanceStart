@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+	th:replace="admin/base::layout(~{::section})">
+<head>
+<meta charset="ISO-8859-1">
+<title>This is Admin dashboard</title>
+</head>
+<body>
+	<section>
+		<div class="card mr-3 ml-3">
+
+			<div class="card-body">
+
+				<h1 class="text-center">Generate Invoice</h1>
+
+				<div class="container-fluid mt-1">
+
+					<div class="text-center">
+						<div class="text-center mb-3 mt-3 ml-3 line">
+							<a class="btn btn-primary" onclick="toggleInvoiceForm();">Invoice</a>
+						</div>
+
+						<div class="text-center mb-3 mt-3 ml-3 line">
+							<a class="btn btn-primary" onclick="toggleCustomerForm();">Add
+								Customer</a>
+						</div>
+
+						<div class="text-center mb-3 mt-3 ml-3 line">
+							<a class="btn btn-primary" onclick="toggleItemForm();">Add
+								item</a>
+						</div>
+					</div>
+					<!-- Customer Form start -->
+					<div class="row">
+
+						<div id="customerFormDiv" class="col-md-8 offset-md-2 hidden">
+							<div class="input-group">
+								<div class="input-group-prepend">
+									<div class="input-group-text ">
+										<i class="fa fa-plus"></i>
+									</div>
+								</div>
+								<input required type="text" id="name"
+									placeholder="Enter Name here" class="form-control" />
+							</div>
+
+							<div class="input-group mt-3">
+								<div class="input-group-prepend">
+									<div class="input-group-text ">
+										<i class="fa fa-plus"></i>
+									</div>
+								</div>
+								<input required type="text" id="address"
+									placeholder="Enter Address here" class="form-control" />
+							</div>
+
+							<div class="input-group mt-3">
+								<div class="input-group-prepend">
+									<div class="input-group-text ">
+										<i class="fa fa-plus"></i>
+									</div>
+								</div>
+								<input required type="text" id="gstNumber"
+									placeholder="Enter GST Number here" class="form-control" />
+							</div>
+
+							<div class="input-group mt-3">
+								<div class="input-group-prepend">
+									<div class="input-group-text ">
+										<i class="fa fa-plus"></i>
+									</div>
+								</div>
+								<input required type="text" id="vendorCode"
+									placeholder="Enter Vendor Code here" class="form-control" />
+							</div>
+							<div class="container text-center mt-3">
+								<button class="btn btn-outline-primary"
+									onclick="saveCustomer();">Save Customer</button>
+							</div>
+						</div>
+
+						<!-- Item form start -->
+						<div id="itemFormDiv" class="col-md-8 offset-md-2 hidden">
+
+							<div class="input-group">
+								<div class="input-group-prepend">
+									<div class="input-group-text ">
+										<i class="fa fa-plus"></i>
+									</div>
+								</div>
+								<input required type="text" id="itemName"
+									placeholder="Enter Item Name here" class="form-control" />
+							</div>
+
+							<div class="input-group mt-3">
+								<div class="input-group-prepend">
+									<div class="input-group-text ">
+										<i class="fa fa-plus"></i>
+									</div>
+								</div>
+								<input required type="text" id="hsnCode"
+									placeholder="Enter HSN Code here" class="form-control" />
+							</div>
+
+							<!-- <div class="input-group mt-3">
+									<div class="input-group-prepend">
+										<div class="input-group-text ">
+											<i class="fa fa-plus"></i>
+										</div>
+									</div>
+									<input required type="text" id="rate" th:field="*{rate}"
+										placeholder="Enter GST Number here" class="form-control" />
+								</div> -->
+
+							<div class="container text-center mt-3">
+								<button class="btn btn-outline-primary" onclick="saveItem();">Save
+									Item</button>
+							</div>
+						</div>
+						<!-- Item form end -->
+
+						<!-- Invoice form start -->
+						<div id="invoiceFormDiv" class="col-md-8 offset-md-2">
+
+							<div class="input-group mt-3 line">
+								<h5 class="mr-0" style="display: inline-block">Invoice
+									Number:</h5>
+								<input required type="number" id="invNo" th:value="${invNo}"
+									class="ml-0 text-center small-boxes" />
+								<h5 class="ml-2" style="display: inline-block">Invoice
+									Date:</h5>
+								<input required type="date" id="invoiceDate"
+									th:value="${todaysDate}"
+									class="ml-0 p-1 text-center small-boxes"
+									style="max-width: fit-content" />
+							</div>
+							<div class="input-group mt-3">
+								<h5 class="mr-2" style="display: inline-block">Customer
+									Name:</h5>
+								<select id="customerId" placeholder="Select Item"
+									class="form-control itemEntrySelect">
+									<option value="">--Select Customer--</option>
+									<option th:each="i : ${custList}" th:value="${i.custId}"
+										th:text="${i.name}"></option>
+								</select>
+							</div>
+
+
+							<div id="itemEntries">
+								<div class="container">
+									<div class="text-center mb-3 mt-3 ml-3 line"
+										style="margin-right: 24%">
+										<h5 class="mr-2" style="display: inline-block">Item Name</h5>
+									</div>
+									<div class="text-center mb-3 mt-3 ml-3 line"
+										style="margin-right: 10%">
+										<h5 class="mr-2" style="display: inline-block">Rate</h5>
+									</div>
+									<div class="text-center mb-3 mt-3 ml-3 line"
+										style="margin-right: 8%">
+										<h5 class="mr-2" style="display: inline-block">Qty</h5>
+									</div>
+									<div class="text-center mb-3 mt-3 ml-3 line"
+										style="margin-right: 0%">
+										<h5 class="mr-2 text-center" style="display: inline-block">Total</h5>
+									</div>
+								</div>
+								<div id="first" class="input-group itemEntryDiv mt-3 ">
+									<div class="input-group-prepend remove">
+										<div class="input-group-text " onclick="removeDiv(this)">
+											<i class="fa fa-multiply"></i>
+										</div>
+									</div>
+									<select id="itemId" placeholder="Select Item"
+										class="form-control itemEntrySelect">
+										<option value="">--Select item--</option>
+										<option th:each="i : ${itemList}" th:value="${i.itemId}"
+											th:text="${i.itemName}"></option>
+									</select>
+									<input type="number" class="vals rate ml-3 text-center small-boxes"
+										placeholder="Enter rate" onfocus="refreshContinuosly(this);" onblur="stopit()" />
+									<input type="number" class="vals qty ml-3 text-center small-boxes"
+										onfocus="refreshContinuosly(this);" onblur="stopit()" placeholder="Enter Qty" />
+									<h5 class="mr-2 text-center total"
+										style="display: inline-block; margin-left: 6%"></h5>
+								</div>
+
+							</div>
+							<div class="container text-right mt-3 mr-4">
+								<h4 id="grandTotal" class="mr-6 text-center"
+									style="display: inline-block; margin-right: 6%"></h4>
+							</div>
+							<div class="container text-center mt-3">
+								<button class="btn btn-outline-primary" onclick="addRows()">Add
+									Rows</button>
+							</div>
+							<div class="container text-center mt-3">
+								<button class="btn btn-outline-primary"
+									onclick="generateInvoice();">Generate Invoice</button>
+							</div>
+
+						</div>
+
+					</div>
+				</div>
+			</div>
+		</div>
+		
+
+		<!-- Modal -->
+		<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog"
+			aria-labelledby="exampleModalLabel" aria-hidden="true">
+			<div class="modal-dialog" role="document">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h5 class="modal-title" id="exampleModalLabel">Invoice is saved</h5>
+						<button type="button" class="close" data-dismiss="modal"
+							aria-label="Close">
+							<span aria-hidden="true">&times;</span>
+						</button>
+					</div>
+					<div class="modal-body">Do you wish to download the Invoice</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-secondary"
+							data-dismiss="modal">Close</button>
+						<button id = "pdfBtn" type="button" class="btn btn-primary">PDF</button>
+						<button id = "excelBtn" type="button" class="btn btn-primary">Excel</button>
+					</div>
+				</div>
+			</div>
+		</div>
+
+
+
+	</section>
+</body>
+</html>

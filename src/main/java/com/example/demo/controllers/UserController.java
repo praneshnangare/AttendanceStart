@@ -55,6 +55,9 @@ public class UserController {
 	public String dashboard(Model model, Principal principal , HttpSession session) {
 		String username = principal.getName();
 		User user = userDAO.getUserByUsername(username);
+		if(user.getRole().equals("ROLE_ADMIN")) {
+			return "redirect:/admin/index";
+		}
 		session.setAttribute("user", user);
 		model.addAttribute("title" , "Dashboard");
 		return "normal/user_dashboard";
