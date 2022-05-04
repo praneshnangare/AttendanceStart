@@ -81,7 +81,7 @@ public class InvoicesController {
 		model.addAttribute("invoiceFormBean" , invoice);
 		model.addAttribute("todaysDate", sdf.format(date));
 		//service.export(response);
-		return "/admin/invoice/generate_invoice";
+		return "admin/invoice/generate_invoice";
 	}
 	
 	@PostMapping("/createone1")
