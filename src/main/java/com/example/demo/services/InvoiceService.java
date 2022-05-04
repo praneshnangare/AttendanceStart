@@ -40,6 +40,9 @@ public class InvoiceService {
 
 	public Integer getNewInvoiceNumber() {
 		Invoice inv =  invoiceDAO.findFirstByOrderByInvNoDesc();
+		if (inv == null) {
+			return 0;
+		}
 		return inv.getInvNo();
 	}
 	public Customer saveCustomer(Customer customer) {
