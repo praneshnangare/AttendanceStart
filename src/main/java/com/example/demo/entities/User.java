@@ -45,13 +45,6 @@ public class User {
 	@OneToMany(cascade = CascadeType.ALL, fetch =  FetchType.LAZY , mappedBy = "user")
 	private List<Attendance> attendances = new ArrayList<Attendance>();
 	
-	@OneToOne(fetch = FetchType.LAZY,
-            cascade =  CascadeType.ALL,
-            mappedBy = "emp")
-	
-	private PaymentInfo paymentInfo;
-	
-	
 	
 	public User() {
 		super();
@@ -69,15 +62,7 @@ public class User {
 	}
 
 
-	public PaymentInfo getPaymentInfo() {
-		return paymentInfo;
-	}
-
-
-	public void setPaymentInfo(PaymentInfo paymentInfo) {
-		this.paymentInfo = paymentInfo;
-	}
-
+	
 
 	public List<Attendance> getAttendances() {
 		return attendances;

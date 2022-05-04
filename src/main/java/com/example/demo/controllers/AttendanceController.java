@@ -16,8 +16,6 @@ import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
-import org.springframework.data.domain.Sort;
-import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.WebDataBinder;
@@ -29,7 +27,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.example.demo.dao.AttendanceDAO;
-import com.example.demo.dao.PaymentInfoDAO;
 import com.example.demo.dao.UserDAO;
 import com.example.demo.entities.Attendance;
 import com.example.demo.entities.AttendanceForm;
@@ -48,8 +45,7 @@ public class AttendanceController {
 	@Autowired
 	private UserDAO userDAO;
 
-	@Autowired
-	private PaymentInfoDAO paymentInfoDAO;
+		
 
 	SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 
