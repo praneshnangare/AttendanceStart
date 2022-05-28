@@ -61,7 +61,7 @@ public class MyConfig extends WebSecurityConfigurerAdapter{
 	
 	
 	
-	//Configure method
+
 	
 	
 }

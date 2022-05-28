@@ -37,6 +37,8 @@ public class InvoiceService {
 	private ItemEntryDAO itemEntryDAO;
 	@Autowired
 	private InvoiceDAO invoiceDAO;
+//	@Autowired
+//	private InvoiceExporterPDF invoiceExporterPDF;
 
 	public Integer getNewInvoiceNumber() {
 		Invoice inv =  invoiceDAO.findFirstByOrderByInvNoDesc();
@@ -90,7 +92,7 @@ public class InvoiceService {
 		response.setHeader(headerKey, headerValue);
 		
 		InvoiceExporter excelExporter = new InvoiceExporter(inv);
-		excelExporter.export(response);
+		excelExporter.export(response , null);
 	}
 	
 	public void ExportToPdf(Invoice inv , HttpServletResponse response) throws IOException {
@@ -100,8 +102,8 @@ public class InvoiceService {
 		String headerValue = "attachment; filename=users_emp" + ".PDF";
 		response.setHeader(headerKey, headerValue);
 		
-		InvoiceExporterPDF excelExporterPdf = new InvoiceExporterPDF(inv);
-		excelExporterPdf.export(response);
+		InvoiceExporterPDF invoiceExporterPDF = new InvoiceExporterPDF(inv);
+		invoiceExporterPDF.export(response , null);
 	}
 	public List<Invoice> getInvoices() {
 		List<Invoice> invoices = this.invoiceDAO.findAll();
@@ -124,6 +126,25 @@ public class InvoiceService {
 	
 	public Item getItemById(Integer id) {
 		return itemDAO.findItemByItemId(id);
+	}
+	public void ExportToPdfMail(String mailId, Invoice inv, HttpServletResponse response) throws IOException {
+		// TODO Auto-generated method stub
+		response.setContentType("application/pdf");
+		String headerKey = "Content-Disposition";
+		String headerValue = "attachment; filename=users_emp" + ".PDF";
+		response.setHeader(headerKey, headerValue);
+		InvoiceExporterPDF invoiceExporterPDF = new InvoiceExporterPDF(inv);
+		invoiceExporterPDF.export(response , mailId);
+	}
+	
+	public void ExportToExcelMail(String mailId, Invoice inv , HttpServletResponse response) throws IOException {
+		//response.setContentType("application/octet-stream");
+		String headerKey = "Content-Disposition";
+		String headerValue = "attachment; filename=users_emp" + ".xlsx";
+		response.setHeader(headerKey, headerValue);
+		
+		InvoiceExporter excelExporter = new InvoiceExporter(inv);
+		excelExporter.export(response , mailId);
 	}
 }
 

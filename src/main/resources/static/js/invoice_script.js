@@ -1,5 +1,11 @@
 
-
+$("#sendOverEmail").change(function() {
+    if(this.checked) {
+		$("#emailId").removeClass("hidden");
+	}else{
+		$("#emailId").addClass("hidden");
+	}
+});
 
 const toggleCustomerForm = () => {
 	$("#customerFormDiv").removeClass("hidden");
@@ -133,11 +139,22 @@ function generateInvoice() {
 			success: function(e) {
 				$("#exampleModal").modal("show");
 				$("#pdfBtn").click(function() {
-					window.location.href = "/admin/invoice/download-pdf/" + e;
+					if($("#sendOverEmail").is(":checked")){
+						var mailId = $("#emailId").val();
+						console.log("mail-> , " , mailId);
+						window.location.href = "/admin/invoice/download-pdf/" + mailId + "/" + e;
+					}else{
+						window.location.href = "/admin/invoice/download-pdf/" + e;
+					}
 					$("#exampleModal").modal("hide");
 				})
 				$("#excelBtn").click(function() {
-					window.location.href = "/admin/invoice/download-excel/" + e;
+					if($("sendOverEmail").is(":checked")){
+						var mailId = $("#emailId").val();
+						window.location.href = "/admin/invoice/download-excel/" + mailId + "/" + e;
+					}else{
+						window.location.href = "/admin/invoice/download-excel/" + e;
+					}
 					$("#exampleModal").modal("hide");
 				})
 			},

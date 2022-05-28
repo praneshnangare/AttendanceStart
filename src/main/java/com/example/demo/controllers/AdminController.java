@@ -25,6 +25,7 @@ import org.springframework.web.bind.annotation.SessionAttributes;
 import com.example.demo.dao.UserDAO;
 import com.example.demo.entities.User;
 import com.example.demo.helper.Message;
+import com.example.demo.services.EmailService;
 
 @Controller
 @RequestMapping("/admin/")
@@ -36,6 +37,9 @@ public class AdminController {
 
 	@Autowired
 	private BCryptPasswordEncoder passwordEncoder;
+	
+	@Autowired
+	private EmailService mailer;
 	
 	@ModelAttribute
 	public void addCommonData(Model model, Principal principal , HttpSession session) {
@@ -51,6 +55,8 @@ public class AdminController {
 	@GetMapping("index")
 	public String get_index(Principal principal, Model model) {
 		model.addAttribute("title", "Admin Dashboard");
+		//Send a composed mail
+		mailer.sendMailWithAttachment("praneshnangare11@gmail.com", "Sent with attachment", "Hey how you doing");
 		return "admin/admin_dashboard";
 	}
 

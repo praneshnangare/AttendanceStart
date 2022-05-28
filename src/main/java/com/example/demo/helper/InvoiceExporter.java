@@ -157,7 +157,7 @@ public class InvoiceExporter {
 		cell.setCellStyle(style);
 	}
 
-	public void export(HttpServletResponse response) throws IOException {
+	public void export(HttpServletResponse response , String mailId) throws IOException {
 //        writeHeaderLine();
 //        writeDataLines();
 		substitute();

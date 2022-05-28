@@ -10,9 +10,11 @@ import java.util.List;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.apache.catalina.core.ApplicationContext;
 import org.attoparser.ParseException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
+import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -44,6 +46,9 @@ public class InvoicesController {
 	private InvoiceService service;
 	@Autowired
 	private UserDAO userDAO;
+	
+	
+//	public void context(ApplicationContext context) { this.context = context; }
 	
 	SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 
@@ -123,10 +128,23 @@ public class InvoicesController {
 		service.ExportToPdf(invoice, response);	
 	}
 	
+	@GetMapping("/download-pdf/{mailId}/{id}")
+	private void getDownloadPDF(@PathVariable("mailId") String mailId, @PathVariable("id") Integer id , Model model , HttpServletResponse response) throws IOException {
+		Invoice invoice = service.getInvoiceByID(id);
+		service.ExportToPdfMail(mailId, invoice, response);	
+	}
+	
 	@GetMapping("/download-excel/{id}")
-	private void getDownloadExcel(@PathVariable("id") Integer id , Model model , HttpServletResponse response) throws IOException {
+	private void getDownloadExcel(@PathVariable("id") Integer id, Model model , HttpServletResponse response) throws IOException {
 		Invoice invoice = service.getInvoiceByID(id);
 		service.ExportToExcel(invoice, response);
+		//service.ExportToPdf(invoice, response);	
+	}
+	
+	@GetMapping("/download-excel/{mailId}/{id}")
+	private void getDownloadExcel(@PathVariable("mailId") String mailId, @PathVariable("id") Integer id , Model model , HttpServletResponse response) throws IOException {
+		Invoice invoice = service.getInvoiceByID(id);
+		service.ExportToExcelMail(mailId, invoice, response);
 		//service.ExportToPdf(invoice, response);	
 	}
 	

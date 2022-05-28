@@ -220,11 +220,16 @@
 						</button>
 					</div>
 					<div class="modal-body">Do you wish to download the Invoice</div>
+					<div>
+						<input type="checkbox" id="sendOverEmail" name="sendMail" class = "ml-3">
+						<label for="sendOverEmail"> Send over mail</label><br>
+						<input type="text" id = "emailId" placeholder = "Email Id" class="ml-3 hidden">
+					</div>
 					<div class="modal-footer">
 						<button type="button" class="btn btn-secondary"
 							data-dismiss="modal">Close</button>
 						<button id = "pdfBtn" type="button" class="btn btn-primary">PDF</button>
-						<button id = "excelBtn" type="button" class="btn btn-primary">Excel</button>
+						<button id = "excelBtn" type="button" class="btn btn-primary hidden">Excel</button>
 					</div>
 				</div>
 			</div>

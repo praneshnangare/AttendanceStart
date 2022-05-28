@@ -1,5 +1,6 @@
 package com.example.demo.helper;
 
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.text.SimpleDateFormat;
@@ -8,9 +9,12 @@ import java.util.List;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.math3.util.Precision;
+import org.springframework.core.io.ByteArrayResource;
+import org.springframework.stereotype.Component;
 
 import com.example.demo.entities.Invoice;
 import com.example.demo.entities.ItemEntry;
+import com.example.demo.services.EmailService;
 import com.itextpdf.io.font.FontProgram;
 import com.itextpdf.io.font.FontProgramFactory;
 import com.itextpdf.io.font.PdfEncodings;
@@ -28,11 +32,15 @@ import com.itextpdf.layout.properties.TextAlignment;
 import com.itextpdf.layout.properties.UnitValue;
 import com.itextpdf.layout.properties.VerticalAlignment;
 
+@Component
 public class InvoiceExporterPDF {
-
+	
 	Invoice invoice;
 	SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
 
+//	@Autowired
+//	EmailService mailer;
+	
 	public InvoiceExporterPDF(Invoice invoice) {
 		super();
 		this.invoice = invoice;
@@ -42,14 +50,15 @@ public class InvoiceExporterPDF {
 		super();
 	}
 
-	public void export(HttpServletResponse response) throws IOException {		
-		OutputStream out = response.getOutputStream();
-		PdfDocument pdfDoc = new PdfDocument(new PdfWriter(out));
+	public void export(HttpServletResponse response , String mailId) throws IOException {		
+		OutputStream output = response.getOutputStream();
+		ByteArrayOutputStream out = new ByteArrayOutputStream();
 		
+		PdfDocument pdfDoc = new PdfDocument(new PdfWriter(out));
 		Document doc = new Document(pdfDoc);
 		try {
 		FontProgram fontProgram = FontProgramFactory
-				.createFont("\\calibri.ttf");
+				.createFont("com\\example\\demo\\helper\\calibri.ttf");
 		PdfFont calibri = PdfFontFactory.createFont(fontProgram, PdfEncodings.WINANSI);
 		doc.setFont(calibri);
 		}
@@ -105,11 +114,13 @@ public class InvoiceExporterPDF {
 		List<ItemEntry> list = this.invoice.getItemList();
 		Integer i = 0;
 		Integer amount;
+		Integer sr = 0;
 		while (i < 7 || i <= list.size()) {
 			try {
 				ItemEntry entry = list.get(i);
 				amount = entry.getAmount();
-				createCell(table, i.toString(), TextAlignment.CENTER, 1, 1, false, fontSize, ht);
+				sr = i+1;
+				createCell(table, sr.toString(), TextAlignment.CENTER, 1, 1, false, fontSize, ht);
 				createCell(table, entry.getItem().getItemName(), TextAlignment.CENTER, 1, 1, false, fontSize, ht);
 				createCell(table, entry.getItem().getHsnCode(), TextAlignment.CENTER, 1, 1, false, fontSize, ht);
 				createCell(table, entry.getQty().toString(), TextAlignment.CENTER, 1, 1, false, fontSize, ht);
@@ -128,6 +139,7 @@ public class InvoiceExporterPDF {
 		Double roundOff = incGST - incGST.intValue();
 		roundOff = Precision.round(roundOff , 2);
 		Integer grandTotal = (int) (incGST - roundOff);
+		gst = Precision.round(gst , 2);
 		
 		addEmptyCells(table , fontSize, ht , 4);
 		//Total
@@ -146,7 +158,6 @@ public class InvoiceExporterPDF {
 		addEmptyCells(table , fontSize, ht , 4);
 		createCell(table, "Round Off", TextAlignment.LEFT, 1, 1, true, fontSize, ht);
 		createCell(table, roundOff.toString(), TextAlignment.LEFT, 1, 1, true, fontSize, ht);
-		
 		addEmptyCells(table , fontSize, ht , 4);
 		createCell(table, "Grand Total", TextAlignment.LEFT, 1, 1, true, fontSize, ht);
 		createCell(table, grandTotal.toString(), TextAlignment.LEFT, 1, 1, true, fontSize, ht);
@@ -182,9 +193,16 @@ public class InvoiceExporterPDF {
 		createCell(table, "This is a Computer Generated Invoice", TextAlignment.CENTER, 1, 6, false, fontSize, ht);
 		doc.add(table);
 		doc.close();
+		byte[] arr = out.toByteArray();
+		output.write(arr);
 		out.close();
-
-		
+		output.close();
+		if(mailId != null) {
+			System.out.println("Sending teh mail");
+			EmailService mailer = new EmailService();
+			mailer.sendMailWithAttachmentFromStream(new ByteArrayResource(arr), 
+					mailId, "sent the pdf", "Got the pdf");
+		}
 	}
 
 	private static void createCell(Table table, String text, TextAlignment align, int rowspan, int colspan,
