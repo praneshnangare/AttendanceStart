@@ -1,5 +1,6 @@
 package com.example.demo.helper;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -21,9 +22,11 @@ import org.apache.poi.ss.usermodel.VerticalAlignment;
 import org.apache.poi.xssf.usermodel.XSSFFont;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.springframework.core.io.ByteArrayResource;
 
 import com.example.demo.entities.Invoice;
 import com.example.demo.entities.ItemEntry;
+import com.example.demo.services.EmailService;
 
 public class InvoiceExporter {
 	private XSSFWorkbook workbook;
@@ -165,6 +168,18 @@ public class InvoiceExporter {
 		workbook.write(outputStream);
 		workbook.close();
 		outputStream.close();
+		if (mailId != null) {
+			ByteArrayOutputStream bos = new ByteArrayOutputStream();
+			try {
+			    workbook.write(bos);
+			} finally {
+			    bos.close();
+			}
+			byte[] bytes = bos.toByteArray();
+			EmailService mailer = new EmailService();
+			mailer.sendMailWithAttachmentFromStream(new ByteArrayResource(bytes), 
+					mailId, "sent the pdf", "Got the pdf");
+		}
 	}
 
 }
